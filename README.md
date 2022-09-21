@@ -1,17 +1,14 @@
 # PETSTAGRAM
 ## Information
----
 Petstagram is an android group project for the Douglas College's CSIS 4175 Mobile Development II Course. The pupose of this app is to provide pet owners with a social media platform where owners can exchange information on pets while still being able to perform instagram features related to their beloved pets. Pet owners can not only upload videos and pictures of their pets, but can also post requests to find mates for their pets, search for other owners who are willing to look after their pets while they are away, or even search for blog articles on how to better take care of their pets.
 
 ## Team
----
 * William Lee
 * Cindy Cheng
 * Chhavi Garg
 * Melony Yu
 
 ## For the Team
----
 **GitHub:**
 1. Before you start coding, get the most recent version of the project (Fetch Origin -> Pull Origin)
 2. Create a new branch named with the following convention (Your Name - Feature You Are Working On, Ex: Cindy-Login Page-Tasks-Section)
