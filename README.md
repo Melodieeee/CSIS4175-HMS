@@ -1,6 +1,6 @@
-# PETSTAGRAM
+# How's My Stylist?
 ## Information
-Petstagram is an android group project for the Douglas College's CSIS 4175 Mobile Development II Course. The pupose of this app is to provide pet owners with a social media platform where owners can exchange information on pets while still being able to perform instagram features related to their beloved pets. Pet owners can not only upload videos and pictures of their pets, but can also post requests to find mates for their pets, search for other owners who are willing to look after their pets while they are away, or even search for blog articles on how to better take care of their pets.
+`How's My Style` is an android group project for the Douglas College's CSIS 4175 Mobile Development II Course. The pupose of this app is to provide users with Hair stylist reviews and prices. How this app stands out from other review app is that this app is Hair review focused. How many times did you encounter in a situation where you wanted a decent haircut for a cheap price, but you ended up going to a salon with a good review but over priced? Don't worry as HMS is here to help.
 
 ## Team
 * William Lee
