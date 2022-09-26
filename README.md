@@ -1,6 +1,6 @@
 # How's My Stylist?
 ## Information
-`How's My Style` is an android group project for the Douglas College's CSIS 4175 Mobile Development II Course. The pupose of this app is to provide users with Hair stylist reviews and prices. How this app stands out from other review app is that this app is Hair review focused. How many times did you encounter in a situation where you wanted a decent haircut for a cheap price, but you ended up going to a salon with a good review but over priced? Don't worry as HMS is here to help.
+`How's My Stylist` is an android group project for the Douglas College's CSIS 4175 Mobile Development II Course. The pupose of this app is to provide users with Hair stylist reviews and prices. How this app stands out from other review app is that this app is Hair review focused. How many times did you encounter in a situation where you wanted a decent haircut for a cheap price, but you ended up going to a salon with a good review but over priced? Don't worry as HMS is here to help.
 
 ## Team
 * William Lee
