@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.petstagram"
+        applicationId "com.example.howsMyStylist"
         minSdk 26
         targetSdk 32
         versionCode 1
