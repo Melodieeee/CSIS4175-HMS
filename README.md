@@ -6,7 +6,7 @@
 * William Lee
 * Cindy Cheng
 * Chhavi Garg
-* Melony Yu
+* Melody Yu
 
 ## For the Team
 **GitHub:**
