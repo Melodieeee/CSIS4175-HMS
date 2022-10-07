@@ -4,16 +4,12 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.example.howsMyStylist.entities.User;
-
+import com.example.howsMyStylist.entities.Review;
 
 @Dao
-public interface UserDao {
-
+public interface ReviewDao {
     @Insert
-    void insert(User user);
-
-    @Query("DELETE FROM USER_TABLE")
+    void insert(Review review);
+    @Query("DELETE FROM REVIEW_TABLE")
     void deleteAll();
-
 }

@@ -1,4 +1,4 @@
-package com.example.petstagram;
+package com.example.howsMyStylist;
 
 import android.app.Application;
 
@@ -6,10 +6,10 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.example.petstagram.dao.StylistDao;
-import com.example.petstagram.dao.UserDao;
-import com.example.petstagram.entities.Stylist;
-import com.example.petstagram.entities.User;
+import com.example.howsMyStylist.dao.StylistDao;
+import com.example.howsMyStylist.dao.UserDao;
+import com.example.howsMyStylist.entities.Stylist;
+import com.example.howsMyStylist.entities.User;
 
 import java.util.List;
 

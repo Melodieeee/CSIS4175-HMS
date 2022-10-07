@@ -1,4 +1,4 @@
-package com.example.petstagram.entities;
+package com.example.howsMyStylist.entities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,14 +22,19 @@ public class Stylist {
     private String email;
     @Nullable
     private String style;
+    // for relationship
+    @Nullable
+    private long salonWorkingId;
 
-    public Stylist (long stylistId, String name, long phone, String profilePic, String email, String style){
+    public Stylist (long stylistId, String name, long phone, String profilePic, String email
+            , String style, long salonWorkingId){
         this.stylistId = stylistId;
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.profilePic = profilePic;
         this.style = style;
+        this.salonWorkingId = salonWorkingId;
     }
 
     public long getStylistId() {
@@ -59,5 +64,11 @@ public class Stylist {
     @Nullable
     public String getStyle() {
         return style;
+    }
+
+    @Nullable
+
+    public long getSalonWorkingId() {
+        return salonWorkingId;
     }
 }

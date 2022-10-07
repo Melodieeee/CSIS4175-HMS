@@ -1,4 +1,4 @@
-package com.example.petstagram.entities;
+package com.example.howsMyStylist.entities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

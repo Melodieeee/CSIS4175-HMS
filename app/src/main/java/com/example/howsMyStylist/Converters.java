@@ -1,4 +1,4 @@
-package com.example.petstagram;
+package com.example.howsMyStylist;
 
 import androidx.room.TypeConverter;
 

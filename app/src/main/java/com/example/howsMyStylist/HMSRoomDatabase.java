@@ -1,4 +1,4 @@
-package com.example.petstagram;
+package com.example.howsMyStylist;
 
 import android.content.Context;
 
@@ -6,13 +6,13 @@ import androidx.room.Database;
 import androidx.room.Entity;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
-import com.example.petstagram.dao.StylistDao;
-import com.example.petstagram.dao.UserDao;
-import com.example.petstagram.entities.Stylist;
-import com.example.petstagram.entities.User;
+import com.example.howsMyStylist.Converters;
+import com.example.howsMyStylist.dao.StylistDao;
+import com.example.howsMyStylist.dao.UserDao;
+import com.example.howsMyStylist.entities.Stylist;
+import com.example.howsMyStylist.entities.User;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
