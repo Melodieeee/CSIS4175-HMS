@@ -19,7 +19,7 @@
             android:src="@drawable/hms_logo"/>
 
         <EditText
-            android:id="@+id/id"
+            android:id="@+id/edit_id"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -28,7 +28,7 @@
             tools:ignore="TouchTargetSizeCheck" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/edit_password"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -43,6 +43,7 @@
             android:layout_marginTop="50dp">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_login"
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:text="@string/login"
@@ -51,6 +52,7 @@
                 android:layout_marginBottom="10dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_register"
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:text="@string/register"
@@ -58,6 +60,7 @@
 
             <Button
                 style="@style/Widget.AppCompat.Button.Borderless"
+                android:id="@+id/btn_forgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="forgot password?"
