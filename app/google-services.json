@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "985162670567",
+    "firebase_url": "https://csis4175-hms-default-rtdb.firebaseio.com",
+    "project_id": "csis4175-hms",
+    "storage_bucket": "csis4175-hms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985162670567:android:bb5fd23969f97f78d65d42",
+        "android_client_info": {
+          "package_name": "com.example.howsMyStylist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985162670567-8d0bluegkuicp2iq8p0j6vknbn8hrmfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.howsMyStylist",
+            "certificate_hash": "df5c4fcf4fd6832d403a5c85bea487948cec7b67"
+          }
+        },
+        {
+          "client_id": "985162670567-9gfpbt9oasrk299iclf3gvtjfq165ej5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm6L-KEWdu16LmUTb59wndcEnfpB8sIgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985162670567-9gfpbt9oasrk299iclf3gvtjfq165ej5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
