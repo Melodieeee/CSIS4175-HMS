@@ -2,4 +2,7 @@
     <string name="app_name">HowsMyStylist</string>
     <string name="login">Login</string>
     <string name="register">register</string>
+    <string name="reset_password">Reset password</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset_message">Please enter you email to receive password reset link.</string>
 </resources>

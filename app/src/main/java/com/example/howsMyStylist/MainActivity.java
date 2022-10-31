@@ -3,6 +3,7 @@ package com.example.howsMyStylist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +28,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         edit_id = findViewById(R.id.edit_id);
-        edit_password = findViewById(R.id.edit_password);
+        edit_password = findViewById(R.id.edit_email);
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
+
+        // Reset password
         btn_forgotPassword = findViewById(R.id.btn_forgotPassword);
+        btn_forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "You can reset your password now!", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
+            }
+        });
 
         //init firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
