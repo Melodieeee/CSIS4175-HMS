@@ -5,4 +5,8 @@
     <string name="reset_password">Reset password</string>
     <string name="cancel">Cancel</string>
     <string name="reset_message">Please enter you email to receive password reset link.</string>
+    <string name="register_create">Create Account</string>
+    <string name="register_backToLogin">Already have an account?</string>
+    <string name="register_policy">Term &amp; policy</string>
+
 </resources>

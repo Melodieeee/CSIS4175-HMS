@@ -33,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="password"
+            android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck" />
 
         <LinearLayout

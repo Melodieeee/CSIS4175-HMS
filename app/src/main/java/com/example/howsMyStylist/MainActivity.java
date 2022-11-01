@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
     EditText edit_id, edit_password;
     Button btn_login, btn_register, btn_forgotPassword;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +29,20 @@ public class MainActivity extends AppCompatActivity {
         edit_id = findViewById(R.id.edit_id);
         edit_password = findViewById(R.id.edit_email);
         btn_login = findViewById(R.id.btn_login);
+
+        // Register page
         btn_register = findViewById(R.id.btn_register);
+        btn_register.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "Register page clicked", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+
+        });
 
         // Reset password
         btn_forgotPassword = findViewById(R.id.btn_forgotPassword);
-        btn_forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "You can reset your password now!", Toast.LENGTH_LONG).show();
-                startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
-            }
+        btn_forgotPassword.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this, "You can reset your password now!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(MainActivity.this, ForgotPasswordActivity.class));
         });
 
         //init firebase
