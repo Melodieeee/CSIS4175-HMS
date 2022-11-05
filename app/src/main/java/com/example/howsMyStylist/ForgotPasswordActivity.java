@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -48,16 +47,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(ForgotPasswordActivity.this,
                         "Clicked reset button", Toast.LENGTH_SHORT).show();
-                RestPassWord(email);
+                ResetPassword(email);
 
             }
         });
         // return to mainActivity
         btn_cancel = findViewById(R.id.btn_cancel);
-        btn_cancel.setOnClickListener(v -> startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class)));
+        btn_cancel.setOnClickListener(v -> startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class)));
     }
 
-    private void RestPassWord(String email) {
+    private void ResetPassword(String email) {
         authProfile = FirebaseAuth.getInstance();
         authProfile.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -66,7 +65,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                     Toast.makeText(ForgotPasswordActivity.this,
                             "Please check your inbox for password reset link", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(ForgotPasswordActivity.this, MainActivity.class);
+                    Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
 
                     // Clear stack to prevent user coming back to ForgotPasswordActivity
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

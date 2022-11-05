@@ -208,6 +208,8 @@
                 android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_birthday"
+                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text=""
