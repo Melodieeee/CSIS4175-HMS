@@ -27,6 +27,7 @@
             android:hint="email"
             tools:ignore="TouchTargetSizeCheck" />
 
+
         <EditText
             android:id="@+id/edit_loginPassword"
             android:layout_width="250dp"
