@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
@@ -113,6 +115,14 @@ public class UserProfileActivity extends AppCompatActivity {
                     edit_email.getEditText().setText(_EMAIL);
                     edit_phone.getEditText().setText(_PHONE);
 
+                    // Set User profile picture (After uploaded)
+                    Uri uri = firebaseUser.getPhotoUrl();
+                    Picasso.with(UserProfileActivity.this).load(uri).into(profile_img);
+
+
+                }else {
+                    Toast.makeText(UserProfileActivity.this, "something went wrong! " +
+                            "Show profile was canceled", Toast.LENGTH_LONG).show();
                 }
             }
 
