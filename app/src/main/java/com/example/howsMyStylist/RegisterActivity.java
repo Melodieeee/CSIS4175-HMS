@@ -216,7 +216,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     public static class ReadWriteUserDetails {
-        public String username, email, phone, pwd, birthday, firstname, lastname;
+        public String username, email, phone, pwd, birthday, firstname, lastname, address, city, state, zip, country;
         public ReadWriteUserDetails() {
         }
 
@@ -231,6 +231,15 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         public ReadWriteUserDetails(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.birthday = dob;
+            this.phone = phone;
+            this.address = address;
+            this.city = city;
+            this.state = state;
+            this.zip = zip;
+            this.country = country;
 
         }
     }
