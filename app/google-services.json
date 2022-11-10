@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "156298641299",
+    "firebase_url": "https://howsmystylist-default-rtdb.firebaseio.com",
+    "project_id": "howsmystylist",
+    "storage_bucket": "howsmystylist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156298641299:android:1b82d45cf6c9c41c903266",
+        "android_client_info": {
+          "package_name": "com.example.howsMyStylist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156298641299-um2miuc3mlgtk7ogb8vtu8a1r7u6c54f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv3gtPeR9gN6AmMcm2UulW5QfZ4xQubv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156298641299-um2miuc3mlgtk7ogb8vtu8a1r7u6c54f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
