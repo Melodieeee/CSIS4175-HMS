@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
@@ -34,6 +37,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private  TextView usernameLabel;
     private EditText edit_birthday;
     private DatePickerDialog picker;
+    private ImageView profile_img;
 
     String _USERNAME, _EMAIL, _PHONE, _PWD;
     FirebaseAuth auth;
@@ -79,6 +83,17 @@ public class UserProfileActivity extends AppCompatActivity {
         } else {
             showUserProfile(firebaseUser);
         }
+
+        // Set onClickListener for profile imageView to change picture
+        profile_img = findViewById(R.id.profile_img);
+        profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this,UploadProfilePicActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void showUserProfile(FirebaseUser firebaseUser) {
@@ -100,6 +115,14 @@ public class UserProfileActivity extends AppCompatActivity {
                     edit_email.getEditText().setText(_EMAIL);
                     edit_phone.getEditText().setText(_PHONE);
 
+                    // Set User profile picture (After uploaded)
+                    Uri uri = firebaseUser.getPhotoUrl();
+                    Picasso.with(UserProfileActivity.this).load(uri).into(profile_img);
+
+
+                }else {
+                    Toast.makeText(UserProfileActivity.this, "something went wrong! " +
+                            "Show profile was canceled", Toast.LENGTH_LONG).show();
                 }
             }
 
