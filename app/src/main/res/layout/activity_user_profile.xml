@@ -200,10 +200,9 @@
             </com.google.android.material.textfield.TextInputLayout>
             <!-- BIRTHDAY -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Birthday"
+                android:hint="@string/birthday"
                 app:boxBackgroundColor="@null"
                 android:layout_marginTop="5dp">
 
@@ -244,8 +243,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:inputType="number"/>
+                    android:inputType="text"
+                    android:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
             <!-- CITY & ZIP-->
