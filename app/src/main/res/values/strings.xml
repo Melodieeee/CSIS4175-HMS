@@ -17,6 +17,7 @@
     <string name="firstName">First name</string>
     <string name="lastName">Last name</string>
     <string name="phone">Phone number</string>
+    <string name="birthday">Birthday (dd/mm/yyyy)</string>
     <string name="choose_picture">Choose Picture</string>
     <string name="upload">Upload</string>
 
