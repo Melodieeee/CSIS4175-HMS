@@ -25,6 +25,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.Key;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "test";
@@ -40,23 +42,23 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        // xml references
         edit_username = findViewById(R.id.edit_username);
         edit_email = findViewById(R.id.edit_email);
         edit_phone = findViewById(R.id.edit_phone);
         edit_password = findViewById(R.id.edit_password);
         edit_confirm_password = findViewById(R.id.edit_password_confirm);
         checkBoxAgree = findViewById(R.id.checkbox_agree);
+        btn_login = findViewById(R.id.btn_registerLogin);
+        btn_createAccount = findViewById(R.id.btn_createAccount);
 
         // Back to login
-        btn_login = findViewById(R.id.btn_registerLogin);
         btn_login.setOnClickListener(v -> {
             Toast.makeText(RegisterActivity.this, "Join us today", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
 
         // Create Account
-        btn_createAccount = findViewById(R.id.btn_createAccount);
         btn_createAccount.setOnClickListener(v -> {
             // Obtain the entered data
             String username = edit_username.getText().toString();
@@ -141,12 +143,12 @@ public class RegisterActivity extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     // Enter user data into the firebase realtime db
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(email, phone, pwd);
+                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(username, email, phone, pwd);
 
                     //Extracting user reference for registered users
                     mFirebaseInstance = FirebaseDatabase.getInstance();
                     mFirebaseDatabase = mFirebaseInstance.getReference("User");
-                    mFirebaseDatabase.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mFirebaseDatabase.child(username).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -188,11 +190,12 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     public static class ReadWriteUserDetails {
-        public String email, phone, pwd;
+        public String username, email, phone, pwd;
         public ReadWriteUserDetails() {
         }
 
-        public ReadWriteUserDetails(String email, String phone, String pwd) {
+        public ReadWriteUserDetails(String username, String email, String phone, String pwd) {
+            this.username = username;
             this.email = email;
             this.phone = phone;
             this.pwd = pwd;
