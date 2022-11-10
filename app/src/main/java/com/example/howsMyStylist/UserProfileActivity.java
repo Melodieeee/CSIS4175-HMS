@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private  TextView usernameLabel;
     private EditText edit_birthday;
     private DatePickerDialog picker;
+    private ImageView profile_img;
 
     String _USERNAME, _EMAIL, _PHONE, _PWD;
     FirebaseAuth auth;
@@ -79,6 +81,17 @@ public class UserProfileActivity extends AppCompatActivity {
         } else {
             showUserProfile(firebaseUser);
         }
+
+        // Set onClickListener for profile imageView to change picture
+        profile_img = findViewById(R.id.profile_img);
+        profile_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this,UploadProfilePicActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void showUserProfile(FirebaseUser firebaseUser) {
