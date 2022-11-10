@@ -1,20 +1,28 @@
 package com.example.howsMyStylist;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 public class UploadProfilePicActivity extends AppCompatActivity {
@@ -46,6 +54,7 @@ public class UploadProfilePicActivity extends AppCompatActivity {
         // Regular URIs.
         Picasso.with(UploadProfilePicActivity.this).load(uri).into(imageViewUploadPic);
 
+        // Choose image to upload
         btnUploadPicChoose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +62,62 @@ public class UploadProfilePicActivity extends AppCompatActivity {
             }
         });
 
+        // Upload image
+        btnUploadPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadPic();
+            }
+        });
+
+    }
+
+    private void uploadPic() {
+        if (uriImage != null){
+            // Save the image with uid of the currently logged user
+            StorageReference fileReference = storageReference.child(auth.getCurrentUser().getUid() +
+                    "." + getFileExtension(uriImage));
+
+            // Upload Image to Storage
+            fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Uri downloadUri = uri;
+                            firebaseUser = auth.getCurrentUser();
+                            //Set the display image of the user after uploaded
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
+                                    .Builder().setPhotoUri(downloadUri).build();
+                            firebaseUser.updateProfile(profileUpdates);
+                        }
+                    });
+
+                    Toast.makeText(UploadProfilePicActivity.this, "Upload Successfully", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(UploadProfilePicActivity.this, UserProfileActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(UploadProfilePicActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        } else {
+            Toast.makeText(UploadProfilePicActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    // Obtain File Extension of the image
+    private String getFileExtension(Uri uri){
+        ContentResolver contentResolver = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
     private void openFileChooser() {
