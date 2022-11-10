@@ -300,7 +300,6 @@
 
                 <!-- COUNTRY -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_country"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -314,6 +313,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
+                        android:id="@+id/input_country"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp" />
@@ -321,7 +321,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <!-- STATE -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_state"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -335,6 +334,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
+                        android:id="@+id/input_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp" />
