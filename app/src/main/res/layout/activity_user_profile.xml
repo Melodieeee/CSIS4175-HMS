@@ -208,11 +208,11 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_birthday"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:inputType="date"/>
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
             <!-- PHONE -->
