@@ -3,6 +3,7 @@ package com.example.howsMyStylist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,13 +27,17 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.Key;
+import java.util.Calendar;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "test";
-    private EditText edit_username, edit_email, edit_phone,
-            edit_password, edit_confirm_password;
+    private EditText edit_username, edit_firstname, edit_lastname ,edit_email, edit_phone,
+            edit_password, edit_confirm_password, edit_birthday;
     private Button btn_createAccount, btn_login;
     private CheckBox checkBoxAgree;
+    private DatePickerDialog picker;
 
     private DatabaseReference mFirebaseDatabase; //we need a reference to make connection
     private FirebaseDatabase mFirebaseInstance;
@@ -40,23 +46,42 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
+        // xml references
         edit_username = findViewById(R.id.edit_username);
+        edit_firstname = findViewById(R.id.edit_firstname);
+        edit_lastname = findViewById(R.id.edit_lastname);
         edit_email = findViewById(R.id.edit_email);
         edit_phone = findViewById(R.id.edit_phone);
         edit_password = findViewById(R.id.edit_password);
         edit_confirm_password = findViewById(R.id.edit_password_confirm);
         checkBoxAgree = findViewById(R.id.checkbox_agree);
-
-        // Back to login
         btn_login = findViewById(R.id.btn_registerLogin);
+        btn_createAccount = findViewById(R.id.btn_createAccount);
+        // In case need to select dob in this page ( default is today's date)
+        edit_birthday = findViewById(R.id.edit_reg_birthday);
+        //set up DatePicker on EditText
+        edit_birthday.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            int month = calendar.get(Calendar.MONTH);
+            int year = calendar.get(Calendar.YEAR);
+            //Date Picker Dialog
+            picker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    edit_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
+                }
+            }, year, month, day);
+            picker.show();
+        });
+
+        // TODO: Back to login
         btn_login.setOnClickListener(v -> {
             Toast.makeText(RegisterActivity.this, "Join us today", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
 
-        // Create Account
-        btn_createAccount = findViewById(R.id.btn_createAccount);
+        // TODO: Create Account
         btn_createAccount.setOnClickListener(v -> {
             // Obtain the entered data
             String username = edit_username.getText().toString();
@@ -64,6 +89,9 @@ public class RegisterActivity extends AppCompatActivity {
             String phone = edit_phone.getText().toString();
             String pwd = edit_password.getText().toString();
             String confirm_pwd = edit_confirm_password.getText().toString();
+            String birthday = edit_birthday.getText().toString();
+            String firstname = edit_firstname.getText().toString();
+            String lastname = edit_lastname.getText().toString();
 
             if (TextUtils.isEmpty(username)) {
                 Toast.makeText(RegisterActivity.this,
@@ -120,12 +148,12 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(RegisterActivity.this,
                         "Request send.", Toast.LENGTH_SHORT).show();
-                registerUser(username, email, phone, pwd, confirm_pwd);
+                registerUser(username, email, phone, pwd, confirm_pwd, birthday, firstname, lastname);
             }
         });
     }
 
-    private void registerUser(String username, String email, String phone, String pwd, String confirm_pwd) {
+    private void registerUser(String username, String email, String phone, String pwd, String confirm_pwd, String birthday, String firstname, String lastname) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         // create user profile
@@ -141,7 +169,7 @@ public class RegisterActivity extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     // Enter user data into the firebase realtime db
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(email, phone, pwd);
+                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(username, email, phone, pwd, birthday, firstname, lastname);
 
                     //Extracting user reference for registered users
                     mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -188,15 +216,31 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     public static class ReadWriteUserDetails {
-        public String email, phone, pwd;
+        public String username, email, phone, pwd, birthday, firstname, lastname, address, city, state, zip, country;
         public ReadWriteUserDetails() {
         }
 
-        public ReadWriteUserDetails(String email, String phone, String pwd) {
+        public ReadWriteUserDetails(String username, String email, String phone, String pwd, String birthday, String firstname, String lastname) {
+            this.username = username;
             this.email = email;
             this.phone = phone;
             this.pwd = pwd;
+            this.birthday = birthday;
+            this.firstname = firstname;
+            this.lastname = lastname;
         }
 
+        public ReadWriteUserDetails(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
+            this.firstname = firstname;
+            this.lastname = lastname;
+            this.birthday = dob;
+            this.phone = phone;
+            this.address = address;
+            this.city = city;
+            this.state = state;
+            this.zip = zip;
+            this.country = country;
+
+        }
     }
 }

@@ -24,7 +24,7 @@
                 android:src="@drawable/hms_logo2" />
 
             <TextView
-                android:id="@+id/username"
+                android:id="@+id/usernameLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/profile_img"
@@ -200,20 +200,19 @@
             </com.google.android.material.textfield.TextInputLayout>
             <!-- BIRTHDAY -->
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_birthday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Birthday"
+                android:hint="@string/birthday"
                 app:boxBackgroundColor="@null"
                 android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_birthday"
-                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:inputType="date"/>
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
             <!-- PHONE -->
@@ -244,8 +243,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:inputType="number"/>
+                    android:inputType="text"
+                    android:text="" />
 
             </com.google.android.material.textfield.TextInputLayout>
             <!-- CITY & ZIP-->
@@ -301,7 +300,6 @@
 
                 <!-- COUNTRY -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_country"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -315,6 +313,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
+                        android:id="@+id/input_country"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp" />
@@ -322,7 +321,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
                 <!-- STATE -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_state"
                     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -336,6 +334,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <AutoCompleteTextView
+                        android:id="@+id/input_state"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp" />

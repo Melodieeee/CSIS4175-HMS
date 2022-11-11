@@ -32,6 +32,22 @@
             android:hint="username"
             tools:ignore="TouchTargetSizeCheck" />
 
+        <EditText
+            android:id="@+id/edit_firstname"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/firstName"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/edit_lastname"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/lastName"
+            tools:ignore="TouchTargetSizeCheck" />
+
 
         <EditText
             android:id="@+id/edit_email"
@@ -39,6 +55,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="email"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <EditText
+            android:id="@+id/edit_reg_birthday"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="Birthday"
             tools:ignore="TouchTargetSizeCheck" />
 
         <EditText
@@ -67,7 +91,6 @@
             android:hint="confirm password"
             android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck" />
-
 
 
         <LinearLayout

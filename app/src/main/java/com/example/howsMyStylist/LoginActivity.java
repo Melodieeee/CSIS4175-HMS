@@ -27,13 +27,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edit_email, edit_password;
     private Button btn_login, btn_register, btn_forgotPassword;
     private FirebaseAuth auth;
     private final String TAG = "LoginActivity";
+
+    private DatabaseReference mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseInstance;
+
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +136,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (firebaseUser.isEmailVerified()) {
                         Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
                         // Open Home page
+                        Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
+                        // Prevent user back to Register activity
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                     } else {
                         firebaseUser.sendEmailVerification();
                         auth.signOut();
@@ -179,12 +192,12 @@ public class LoginActivity extends AppCompatActivity {
         if (auth.getCurrentUser() != null){
             Toast.makeText(LoginActivity.this, "Already logged in!", Toast.LENGTH_SHORT).show();
             //start Home activity
-            //startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
             finish();
         } else {
             Toast.makeText(LoginActivity.this, "You can log in now!", Toast.LENGTH_SHORT).show();
-
         }
+
     }
 
 }
