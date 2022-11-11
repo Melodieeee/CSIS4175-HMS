@@ -1,9 +1,210 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UploadActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!--   Stylist Name     -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Stylist Name*"
+            app:hintTextColor="@color/deep_blue"
+            android:textColorHint="@color/light_grey"
+            app:boxBackgroundColor="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_stylistName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:inputType="text"
+                android:maxLines="1"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--   Salon Name (Optional)    -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Salon Name"
+            app:hintTextColor="@color/deep_blue"
+            android:textColorHint="@color/light_grey"
+            app:boxBackgroundColor="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_salonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <!--   Service and Price  -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Service Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="2"
+                android:hint="Service Name*"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey"
+                app:boxBackgroundColor="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/input_price"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_serviceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--Price (Tip Not Included -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:hint="Price*"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey"
+                app:boxBackgroundColor="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/input_serviceName"
+                app:layout_constraintTop_toTopOf="parent">
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/input_price"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:inputType="numberDecimal"-->
+<!--                    android:text="" />-->
+                <com.cottacush.android.currencyedittext.CurrencyEditText
+                    android:ems="10"
+                    android:id="@+id/input_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:currencySymbol="CA$"
+                    app:useCurrencySymbolAsHint="false"
+                    app:localeTag="en-CA"
+                    app:maxNumberOfDecimalDigits="2"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <!--   Date     -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Date*(dd/mm/yyyy)"
+            app:hintTextColor="@color/deep_blue"
+            android:textColorHint="@color/light_grey"
+            app:boxBackgroundColor="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_serviceDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:allowClickWhenDisabled="true"
+                android:textColor="@color/black"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--   Review     -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Write Your Review..."
+            app:hintTextColor="@color/deep_blue"
+            android:textColorHint="@color/light_grey"
+            app:boxBackgroundColor="@null">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="4"
+                android:text="" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--   Rate Your Stylist     -->
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="0.5"
+            android:theme="@style/RatingBar" />
+
+        <!--    added images    -->
+        <ImageView
+            android:id="@+id/imgView_photoAdded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+        <!--   Upload receipt (Optional)     -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAddPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_register"
+            android:text="Add Photo"
+            android:textColor="@color/black" />
+
+        <!--    Submit    -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSubmitReview"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_login"
+            android:text="Submit"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+
+</RelativeLayout>
+</ScrollView>

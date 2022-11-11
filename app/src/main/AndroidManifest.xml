@@ -17,6 +17,9 @@
             android:name=".UploadProfilePicActivity"
             android:exported="false" />
         <activity
+            android:name=".HomePageActivity"
+            android:exported="false" />
+        <activity
             android:name=".UploadActivity"
             android:exported="false" />
         <activity

@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.howsMyStylist.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -174,7 +175,7 @@ public class RegisterActivity extends AppCompatActivity {
                     //Extracting user reference for registered users
                     mFirebaseInstance = FirebaseDatabase.getInstance();
                     mFirebaseDatabase = mFirebaseInstance.getReference("User");
-                    mFirebaseDatabase.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mFirebaseDatabase.child(firebaseUser.getUid()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 

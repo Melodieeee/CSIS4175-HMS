@@ -3,22 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/drawable/back.xml" value="0.2195" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/drawable/btn_login.xml" value="0.2195" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/drawable/btn_register.xml" value="0.2195" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_forgot_pass_word.xml" value="0.3619791666666667" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_login.xml" value="0.3619791666666667" />
+        <entry key="../../../../../layout/custom_preview.xml" value="0.10208543558694921" />
         <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_register.xml" value="0.3619791666666667" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_upload.xml" value="0.5494791666666666" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_upload_profile_pic.xml" value="0.3619791666666667" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_upload_profile_picture.xml" value="0.3619791666666667" />
-        <entry key="..\:/Users/yusin/AndroidStudioProjects/4175-Mobile II/CSIS-4175-project/CSIS4175-HMS/app/src/main/res/layout/activity_user_profile.xml" value="0.33" />
+        <entry key="app/src/main/res/drawable/btn_border.xml" value="0.283" />
+        <entry key="app/src/main/res/drawable/btn_login.xml" value="0.283" />
+        <entry key="app/src/main/res/drawable/btn_register.xml" value="0.265" />
         <entry key="app/src/main/res/drawable/ic_asset_4ic.xml" value="0.1715" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_photo_alternate_24.xml" value="0.145" />
+        <entry key="app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.145" />
+        <entry key="app/src/main/res/drawable/ic_baseline_rate_review_24.xml" value="0.145" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15704154002026344" />
+        <entry key="app/src/main/res/layout/activity_forgot_pass_word.xml" value="0.27288208007812503" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.21594848632812502" />
+        <entry key="app/src/main/res/layout/activity_home_page.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.20049896240234374" />
+        <entry key="app/src/main/res/layout/activity_upload.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_upload_profile_pic.xml" value="0.3203125" />
+        <entry key="app/src/main/res/layout/activity_user_profile.xml" value="0.15933380126953126" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2695" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1115" />
       </map>
     </option>
   </component>
@@ -27,5 +33,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.335" />
+      </ProjectState>
+    </option>
   </component>
 </project>
