@@ -1,9 +1,11 @@
 package com.example.howsMyStylist;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,8 +47,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private TextInputLayout edit_firstName, edit_lastName, edit_email, edit_password,
                             edit_confirm_password, edit_phone, edit_address,
-                            edit_city, edit_zip, edit_state, edit_country;;
-//    AutoCompleteTextView edit_state, edit_country;
+                            edit_city, edit_zip;
+    AutoCompleteTextView edit_state, edit_country;
     private TextView usernameLabel;
     private EditText edit_birthday;
     private DatePickerDialog picker;
@@ -91,23 +93,40 @@ public class UserProfileActivity extends AppCompatActivity {
         edit_country = findViewById(R.id.input_country);
         edit_state = findViewById(R.id.input_state);
 
-        String[] countries = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe", "Palestine"};
-        String[] states = new String[]{"British Columbia", "Nova Scotia", "Quebec", "Manitoba", "Nunavut", "Saskatchewan","New", "Brunswick", "Ontario", "Yukon"};
+        // Set spinner for countries and states
+        // Countries
+        String[] countries = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe", "Palestine"};
+        ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(
+                UserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, countries);
+        edit_country.setAdapter(countryAdapter);
+        edit_country.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(UserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        // States (Canada)
+        String[] states = new String[]{"Alberta", "British Columbia", "Manitoba", "New Brunswick",
+                                       "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut",
+                                       "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon"};
+        ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
+                UserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, states);
+        edit_state.setAdapter(stateAdapter);
+        edit_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(UserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-//        ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(UserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, countries);
-//        edit_country.setAdapter(countryAdapter);
-//        edit_country.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(UserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
         // Get data from firebase
         auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         if (firebaseUser == null){
             Toast.makeText(UserProfileActivity.this, "something went wrong!", Toast.LENGTH_LONG).show();
         } else {
+            // Notify user if they have not verified email
+            checkIfEmailVerified(firebaseUser);
             showUserProfile(firebaseUser);
         }
 
@@ -129,29 +148,60 @@ public class UserProfileActivity extends AppCompatActivity {
                 updateProfile(firebaseUser);
             }
         });
-
-
     }
+
+    private void checkIfEmailVerified(FirebaseUser firebaseUser) {
+        if (! firebaseUser.isEmailVerified()){
+            showAlertDialog();
+        }
+    }
+
+    private void showAlertDialog() {
+        //Set up alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this, R.style.AlertDialogTheme);
+        builder.setTitle("You account is not verified!");
+        builder.setMessage("Please verify your email now. Or You may not login without email verification next time.");
+        //Open email app if "continue" clicked
+        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //open in a new window
+                startActivity(intent);
+            }
+        });
+        //Create AlertDialog
+        AlertDialog alertDialog = builder.create();
+        //Show AlertDialog
+        alertDialog.show();
+    }
+
 
     private void showUserProfile(FirebaseUser firebaseUser) {
         String userId = firebaseUser.getUid();
 
-        //Extracting User Reference from Database for "Registered User"
+        //Extracting User Reference from Database
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
         reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                RegisterActivity.ReadWriteUserDetails readUserDetails = snapshot.getValue(RegisterActivity.ReadWriteUserDetails.class);
-                if (readUserDetails != null){
+                User user = snapshot.getValue(User.class);
+                if (user != null){
                     // Set data for each fields
                     _USERNAME = firebaseUser.getDisplayName();
                     _EMAIL = firebaseUser.getEmail();
-                    _PHONE = readUserDetails.phone;
-//                    _PWD = readUserDetails.pwd;
+                    _PHONE = user.getPhone();
+//                    _PWD = user.pwd;
 //      See if need to let users change their pwd in this page or set a btn and let them change in forgot password page???
-                    _FIRSTNAME = readUserDetails.firstname;
-                    _LASTNAME = readUserDetails.lastname;
-                    _DOB = readUserDetails.birthday;
+                    _FIRSTNAME = user.getFname();
+                    _LASTNAME = user.getLname();
+                    _DOB = user.getBirth();
+                    _ADDRESS = user.getAddress();
+                    _CITY = user.getCity();
+                    _ZIP = user.getZip();
+                    _COUNTRY = user.getCountry();
+                    _STATE = user.getState();
 
 
                     usernameLabel.setText(_USERNAME);
@@ -161,11 +211,17 @@ public class UserProfileActivity extends AppCompatActivity {
                     edit_firstName.getEditText().setText(_FIRSTNAME);
                     edit_lastName.getEditText().setText(_LASTNAME);
                     edit_birthday.setText(_DOB);
+                    edit_address.getEditText().setText(_ADDRESS);
+                    edit_city.getEditText().setText(_CITY);
+                    edit_zip.getEditText().setText(_ZIP);
+                    edit_country.setText(_COUNTRY);
+                    edit_state.setText(_STATE);
 
                     // Set User profile picture (After uploaded)
                     Uri uri = firebaseUser.getPhotoUrl();
-                    Picasso.with(UserProfileActivity.this).load(uri).into(profile_img);
-
+                    if (uri != null){
+                        Picasso.with(UserProfileActivity.this).load(uri).into(profile_img);
+                    }
 
                 }else {
                     Toast.makeText(UserProfileActivity.this, "something went wrong! " +
@@ -183,7 +239,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void updateProfile(FirebaseUser firebaseUser) {
 
-
         // Obtain the entered data
         _USERNAME = usernameLabel.getText().toString();
         _FIRSTNAME = edit_firstName.getEditText().getText().toString();
@@ -193,22 +248,22 @@ public class UserProfileActivity extends AppCompatActivity {
         _ADDRESS = edit_address.getEditText().getText().toString();
         _CITY = edit_city.getEditText().getText().toString();
         _ZIP = edit_zip.getEditText().getText().toString();
-        _STATE = edit_state.toString();
-        _COUNTRY = edit_country.toString();
+        _STATE = edit_state.getText().toString();
+        _COUNTRY = edit_country.getText().toString();
 
-        RegisterActivity.ReadWriteUserDetails writeUserDetails =
-                new RegisterActivity.ReadWriteUserDetails(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
+        User user =
+                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
 
         //Extracting User Reference from Database for "User"
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
         String userId = firebaseUser.getUid();
-        reference.child(userId).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     // Setting new fields
-                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(_USERNAME).build();
-                    firebaseUser.updateProfile(profileUpdates);
+                    UserProfileChangeRequest updatableProfileField = new UserProfileChangeRequest.Builder().setDisplayName(_USERNAME).build();
+                    firebaseUser.updateProfile(updatableProfileField);
 
                     Toast.makeText(UserProfileActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
                 } else {
@@ -220,7 +275,11 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        auth.signOut();
     }
 }

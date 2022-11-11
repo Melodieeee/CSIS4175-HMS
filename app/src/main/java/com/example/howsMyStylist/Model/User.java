@@ -9,22 +9,46 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Date birth;
+    private String birth;
+    private String address;
     private String country;
     private String state;
     private String city;
-    private String unit;
     private String zip;
     private int vStatus;
     private String picture;
     private String intro;
 
-    public User() {}
-    public User (String email, String password, String username, String phone){
-        this.email = email;
-        this.password = password;
+    public User (){
+
+    }
+
+    public User (String editUsername, String editPassword){
+        username = editUsername;
+        password = editPassword;
+    }
+
+    public User(String username, String email, String phone, String pwd, String birthday, String firstname, String lastname) {
         this.username = username;
+        this.email = email;
         this.phone = phone;
+        this.password = pwd;
+        this.birth = birthday;
+        this.fname = firstname;
+        this.lname = lastname;
+    }
+
+    public User(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
+        this.fname = firstname;
+        this.lname = lastname;
+        this.birth = dob;
+        this.phone = phone;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.country = country;
+
     }
 
     public String getFname() {
@@ -75,11 +99,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getBirth() {
+    public String getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(String birth) {
         this.birth = birth;
     }
 
@@ -107,12 +131,12 @@ public class User {
         this.city = city;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getAddress() {
+        return address;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getZip() {

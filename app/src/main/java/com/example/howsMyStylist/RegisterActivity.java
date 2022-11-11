@@ -170,7 +170,7 @@ public class RegisterActivity extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     // Enter user data into the firebase realtime db
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(username, email, phone, pwd, birthday, firstname, lastname);
+                    User newUser = new User(username, email, phone, pwd, birthday, firstname, lastname);
 
                     //Extracting user reference for registered users
                     mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -215,24 +215,5 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-    public static class ReadWriteUserDetails {
-        public String username, email, phone, pwd, birthday, firstname, lastname;
-        public ReadWriteUserDetails() {
-        }
-
-        public ReadWriteUserDetails(String username, String email, String phone, String pwd, String birthday, String firstname, String lastname) {
-            this.username = username;
-            this.email = email;
-            this.phone = phone;
-            this.pwd = pwd;
-            this.birthday = birthday;
-            this.firstname = firstname;
-            this.lastname = lastname;
-        }
-
-        public ReadWriteUserDetails(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
-
-        }
     }
 }
