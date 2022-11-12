@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "358455324962",
-    "firebase_url": "https://howsmystylist-ccb00-default-rtdb.firebaseio.com",
-    "project_id": "howsmystylist-ccb00",
-    "storage_bucket": "howsmystylist-ccb00.appspot.com"
+    "project_number": "156298641299",
+    "firebase_url": "https://howsmystylist-default-rtdb.firebaseio.com",
+    "project_id": "howsmystylist",
+    "storage_bucket": "howsmystylist.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:358455324962:android:d821dfb6c0026648abb57b",
+        "mobilesdk_app_id": "1:156298641299:android:1b82d45cf6c9c41c903266",
         "android_client_info": {
           "package_name": "com.example.howsMyStylist"
         }
       },
       "oauth_client": [
         {
-          "client_id": "358455324962-9ckd9rtk0r2kii15vdebtptdb3aur9jf.apps.googleusercontent.com",
+          "client_id": "156298641299-um2miuc3mlgtk7ogb8vtu8a1r7u6c54f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbE65OlsWWs7L_EvLPPoN3WbnqKv46hCs"
+          "current_key": "AIzaSyCv3gtPeR9gN6AmMcm2UulW5QfZ4xQubv8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "358455324962-9ckd9rtk0r2kii15vdebtptdb3aur9jf.apps.googleusercontent.com",
+              "client_id": "156298641299-um2miuc3mlgtk7ogb8vtu8a1r7u6c54f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

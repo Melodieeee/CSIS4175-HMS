@@ -65,6 +65,26 @@ import java.util.Objects;
 
 public class UploadActivity extends AppCompatActivity {
 
+    private CurrencyEditText currencyEditText;
+    private EditText edit_stylistName, edit_salonName, edit_serviceName,
+                        edit_serviceDate, edit_review;
+    private RatingBar ratingBar;
+    private ImageView imgView_photoAdded;
+    private Button btn_addPhoto, btn_submit;
+
+    private DatePickerDialog picker;
+    private String date;
+
+    private FirebaseAuth auth;
+    private StorageReference storageReference;
+    private DatabaseReference firebaseDatabase;
+    private FirebaseDatabase firebaseInstance;
+    private FirebaseUser firebaseUser;
+    ActivityResultLauncher<String> imgFilePicker;
+    private Uri uriUploadImg;
+
+    private String reviewId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

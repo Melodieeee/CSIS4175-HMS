@@ -49,15 +49,17 @@ public class UserProfileActivity extends AppCompatActivity {
                             edit_confirm_password, edit_phone, edit_address,
                             edit_city, edit_zip;
     AutoCompleteTextView edit_state, edit_country;
-    private TextView usernameLabel;
+    private TextView usernameLabel, reviewLabel, favoriteLabel;
     private EditText edit_birthday;
     private DatePickerDialog picker;
     private ImageView profile_img;
     Button btn_update;
 
     String _USERNAME, _EMAIL, _PHONE, _PWD, _DOB,
-            _FIRSTNAME, _LASTNAME, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY;
+            _FIRSTNAME, _LASTNAME, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY,
+            _REVIEW, _FAVORITE;
     FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +68,13 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Reference to xml
         usernameLabel = findViewById(R.id.usernameLabel);
+        reviewLabel = findViewById(R.id.review_label);
+        favoriteLabel = findViewById(R.id.favorite_label);
         edit_firstName = findViewById(R.id.input_firstName);
         edit_lastName = findViewById(R.id.input_lastName);
         edit_email = findViewById(R.id.input_email);
         edit_birthday = findViewById(R.id.edit_birthday);
+
         //set up DatePicker on EditText
         edit_birthday.setOnClickListener(v -> {
             // Extracting to dd,mm,yyyy by /
@@ -78,7 +83,7 @@ public class UserProfileActivity extends AppCompatActivity {
             int month = Integer.parseInt(textSADoB[1]) - 1;
             int year = Integer.parseInt(textSADoB[2]);
             //Date Picker Dialog
-            picker = new DatePickerDialog(UserProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
+            picker = new DatePickerDialog(UserProfileActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     edit_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
@@ -190,6 +195,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 if (user != null){
                     // Set data for each fields
                     _USERNAME = firebaseUser.getDisplayName();
+                    _REVIEW = String.valueOf(snapshot.child("reviewIdList").getChildrenCount());
                     _EMAIL = firebaseUser.getEmail();
                     _PHONE = user.getPhone();
 //                    _PWD = user.pwd;
@@ -205,6 +211,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
                     usernameLabel.setText(_USERNAME);
+                    reviewLabel.setText(_REVIEW);
                     edit_email.getEditText().setText(_EMAIL);
                     edit_phone.getEditText().setText(_PHONE);
 //                    edit_password.getEditText().setText(_PWD);
@@ -277,9 +284,4 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        auth.signOut();
-    }
 }

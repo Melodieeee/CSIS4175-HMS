@@ -165,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     FirebaseUser firebaseUser = auth.getCurrentUser();
 
-                    // Update display name of user??
+                    // Update display name of user
                     UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
                     firebaseUser.updateProfile(profileChangeRequest);
 

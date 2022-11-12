@@ -154,7 +154,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/input_lastName"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -174,7 +176,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/input_firstName"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -191,7 +195,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 app:boxBackgroundColor="@null"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -205,7 +211,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/birthday"
                 app:boxBackgroundColor="@null"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_birthday"
@@ -213,7 +221,11 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:inputType="date"
-                    android:text="" />
+                    android:text=""
+                    android:enabled="false"
+                    android:allowClickWhenDisabled="true"
+                    android:textColor="@color/black"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
             <!-- PHONE -->
@@ -223,7 +235,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Phone"
                 app:boxBackgroundColor="@null"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -239,7 +253,9 @@
                 android:layout_height="wrap_content"
                 android:hint="Address"
                 app:boxBackgroundColor="@null"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                app:hintTextColor="@color/deep_blue"
+                android:textColorHint="@color/light_grey">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -265,7 +281,9 @@
                     android:layout_marginTop="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -284,7 +302,9 @@
                     app:boxBackgroundColor="@null"
                     android:layout_marginTop="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -311,7 +331,9 @@
                     app:boxBackgroundColor="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <AutoCompleteTextView
                         android:id="@+id/input_country"
@@ -332,7 +354,9 @@
                     app:boxBackgroundColor="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:hintTextColor="@color/deep_blue"
+                    android:textColorHint="@color/light_grey">
 
                     <AutoCompleteTextView
                         android:id="@+id/input_state"

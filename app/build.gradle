@@ -57,4 +57,5 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.cottacush:CurrencyEditText:0.0.10'
 }
