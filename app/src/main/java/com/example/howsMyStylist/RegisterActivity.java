@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
             //Date Picker Dialog
-            picker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+            picker = new DatePickerDialog(RegisterActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     edit_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);

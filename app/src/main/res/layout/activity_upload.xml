@@ -170,13 +170,10 @@
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
                 android:numStars="5"
-                android:rating="0"
                 android:stepSize="0.5"
                 android:theme="@style/RatingBar" />
 
-
             <!--    added images    -->
-
                 <ImageView
                     android:id="@+id/imgView_photoAdded"
                     android:layout_width="match_parent"
