@@ -27,21 +27,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText edit_email, edit_password;
     private Button btn_login, btn_register, btn_forgotPassword;
     private FirebaseAuth auth;
     private final String TAG = "LoginActivity";
-
-    private DatabaseReference mFirebaseDatabase;
-    private FirebaseDatabase mFirebaseInstance;
-
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,40 +84,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        // init firebase
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        final DatabaseReference table_user = database.getReference("User");
-//
-//        btn_login.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                table_user.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        //check user validation
-//                        if(snapshot.child(edit_email.getText().toString()).exists()){
-//                            //get user information
-//                            User user = snapshot.child(edit_email.getText().toString()).getValue(User.class);
-//                            if(user.getPassword().equals(edit_password.getText().toString())){
-//                                Toast.makeText(LoginActivity.this, "Username or Password success", Toast.LENGTH_LONG).show();
-//                            }else{
-//                                Toast.makeText(LoginActivity.this, "Username or Password failed", Toast.LENGTH_LONG).show();
-//                            }
-//                        }else{
-//                            Toast.makeText(LoginActivity.this, "Username or Password failed", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//            }
-//        });
     }
 
     private void loginUser(String loginEmail, String loginPassword) {
+
         auth.signInWithEmailAndPassword(loginEmail,loginPassword).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -136,10 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (firebaseUser.isEmailVerified()) {
                         Toast.makeText(LoginActivity.this, "Login Successfully!", Toast.LENGTH_SHORT).show();
                         // Open Home page
-                        Intent intent = new Intent(LoginActivity.this, UserProfileActivity.class);
-                        // Prevent user back to Register activity
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
+                        startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
                         finish();
                     } else {
                         firebaseUser.sendEmailVerification();
@@ -191,13 +150,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         if (auth.getCurrentUser() != null){
             Toast.makeText(LoginActivity.this, "Already logged in!", Toast.LENGTH_SHORT).show();
-            //start Home activity
-            startActivity(new Intent(LoginActivity.this, UserProfileActivity.class));
+            //start HomePage activity
+            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
             finish();
         } else {
             Toast.makeText(LoginActivity.this, "You can log in now!", Toast.LENGTH_SHORT).show();
-        }
 
+        }
     }
 
 }

@@ -67,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
             int month = calendar.get(Calendar.MONTH);
             int year = calendar.get(Calendar.YEAR);
             //Date Picker Dialog
-            picker = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
+            picker = new DatePickerDialog(RegisterActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     edit_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
@@ -165,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     FirebaseUser firebaseUser = auth.getCurrentUser();
 
-                    // Update display name of user??
+                    // Update display name of user
                     UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
                     firebaseUser.updateProfile(profileChangeRequest);
 

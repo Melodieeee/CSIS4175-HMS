@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.howsMyStylist">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,13 +16,26 @@
         android:theme="@style/Theme.HowsMyStylist"
         tools:targetApi="31">
         <activity
-            android:name=".UploadProfilePicActivity"
+            android:name=".UploadSalonProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".UploadActivity"
+            android:name=".UploadStylistProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".UserProfileActivity"
+            android:name=".PopupStylistActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.PopupStylistTheme" />
+        <activity
+            android:name=".UploadUserProfilePicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomePageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UploadUserProfileActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"

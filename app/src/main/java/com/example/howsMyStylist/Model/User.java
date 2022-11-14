@@ -15,15 +15,12 @@ public class User {
     private String state;
     private String city;
     private String zip;
-    private int vStatus;
-    private String picture;
-    private String intro;
 
-    public User (){
+    public User() {
 
     }
 
-    public User (String editUsername, String editPassword){
+    public User(String editUsername, String editPassword) {
         username = editUsername;
         password = editPassword;
     }
@@ -147,27 +144,4 @@ public class User {
         this.zip = zip;
     }
 
-    public int getvStatus() {
-        return vStatus;
-    }
-
-    public void setvStatus(int vStatus) {
-        this.vStatus = vStatus;
-    }
-
-    public String getPicture() {
-        return picture;
-    }
-
-    public void setPicture(String picture) {
-        this.picture = picture;
-    }
-
-    public String getIntro() {
-        return intro;
-    }
-
-    public void setIntro(String intro) {
-        this.intro = intro;
-    }
 }

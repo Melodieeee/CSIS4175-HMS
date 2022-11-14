@@ -63,6 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:hint="Birthday"
+            android:enabled="false"
+            android:allowClickWhenDisabled="true"
             tools:ignore="TouchTargetSizeCheck" />
 
         <EditText
