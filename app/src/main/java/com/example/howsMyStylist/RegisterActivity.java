@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.howsMyStylist.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -169,12 +170,12 @@ public class RegisterActivity extends AppCompatActivity {
                     firebaseUser.updateProfile(profileChangeRequest);
 
                     // Enter user data into the firebase realtime db
-                    ReadWriteUserDetails writeUserDetails = new ReadWriteUserDetails(username, email, phone, pwd, birthday, firstname, lastname);
+                    User newUser = new User(username, email, phone, pwd, birthday, firstname, lastname);
 
                     //Extracting user reference for registered users
                     mFirebaseInstance = FirebaseDatabase.getInstance();
                     mFirebaseDatabase = mFirebaseInstance.getReference("User");
-                    mFirebaseDatabase.child(firebaseUser.getUid()).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    mFirebaseDatabase.child(firebaseUser.getUid()).setValue(newUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
 
@@ -214,33 +215,5 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-    public static class ReadWriteUserDetails {
-        public String username, email, phone, pwd, birthday, firstname, lastname, address, city, state, zip, country;
-        public ReadWriteUserDetails() {
-        }
-
-        public ReadWriteUserDetails(String username, String email, String phone, String pwd, String birthday, String firstname, String lastname) {
-            this.username = username;
-            this.email = email;
-            this.phone = phone;
-            this.pwd = pwd;
-            this.birthday = birthday;
-            this.firstname = firstname;
-            this.lastname = lastname;
-        }
-
-        public ReadWriteUserDetails(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
-            this.firstname = firstname;
-            this.lastname = lastname;
-            this.birthday = dob;
-            this.phone = phone;
-            this.address = address;
-            this.city = city;
-            this.state = state;
-            this.zip = zip;
-            this.country = country;
-
-        }
     }
 }

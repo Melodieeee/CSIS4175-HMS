@@ -186,22 +186,22 @@ public class UserProfileActivity extends AppCompatActivity {
         reference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                RegisterActivity.ReadWriteUserDetails readUserDetails = snapshot.getValue(RegisterActivity.ReadWriteUserDetails.class);
-                if (readUserDetails != null){
+                User user = snapshot.getValue(User.class);
+                if (user != null){
                     // Set data for each fields
                     _USERNAME = firebaseUser.getDisplayName();
                     _EMAIL = firebaseUser.getEmail();
-                    _PHONE = readUserDetails.phone;
-//                    _PWD = readUserDetails.pwd;
+                    _PHONE = user.getPhone();
+//                    _PWD = user.pwd;
 //      See if need to let users change their pwd in this page or set a btn and let them change in forgot password page???
-                    _FIRSTNAME = readUserDetails.firstname;
-                    _LASTNAME = readUserDetails.lastname;
-                    _DOB = readUserDetails.birthday;
-                    _ADDRESS = readUserDetails.address;
-                    _CITY = readUserDetails.city;
-                    _ZIP = readUserDetails.zip;
-                    _COUNTRY = readUserDetails.country;
-                    _STATE = readUserDetails.state;
+                    _FIRSTNAME = user.getFname();
+                    _LASTNAME = user.getLname();
+                    _DOB = user.getBirth();
+                    _ADDRESS = user.getAddress();
+                    _CITY = user.getCity();
+                    _ZIP = user.getZip();
+                    _COUNTRY = user.getCountry();
+                    _STATE = user.getState();
 
 
                     usernameLabel.setText(_USERNAME);
@@ -251,13 +251,13 @@ public class UserProfileActivity extends AppCompatActivity {
         _STATE = edit_state.getText().toString();
         _COUNTRY = edit_country.getText().toString();
 
-        RegisterActivity.ReadWriteUserDetails writeUserDetails =
-                new RegisterActivity.ReadWriteUserDetails(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
+        User user =
+                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
 
         //Extracting User Reference from Database for "User"
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
         String userId = firebaseUser.getUid();
-        reference.child(userId).setValue(writeUserDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(userId).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
@@ -275,7 +275,11 @@ public class UserProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        auth.signOut();
     }
 }
