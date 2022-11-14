@@ -65,7 +65,6 @@
             android:hint="Birthday"
             android:enabled="false"
             android:allowClickWhenDisabled="true"
-            android:textColor="@color/black"
             tools:ignore="TouchTargetSizeCheck" />
 
         <EditText

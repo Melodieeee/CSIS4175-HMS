@@ -19,13 +19,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class UploadProfilePicActivity extends AppCompatActivity {
+public class UploadUserProfilePicActivity extends AppCompatActivity {
 
     private ImageView imageViewUploadPic;
     FirebaseAuth auth;
@@ -37,7 +36,7 @@ public class UploadProfilePicActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_profile_pic);
+        setContentView(R.layout.activity_upload_user_profile_pic);
 
         Button btnUploadPicChoose = findViewById(R.id.btn_choosePic);
         Button btnUploadPic = findViewById(R.id.btn_upload);
@@ -52,7 +51,7 @@ public class UploadProfilePicActivity extends AppCompatActivity {
 
         // Set User's current preview image in ImageView (if uploaded already)
         // Regular URIs.
-        Picasso.with(UploadProfilePicActivity.this).load(uri).into(imageViewUploadPic);
+        Picasso.with(UploadUserProfilePicActivity.this).load(uri).into(imageViewUploadPic);
 
         // Choose image to upload
         btnUploadPicChoose.setOnClickListener(new View.OnClickListener() {
@@ -94,21 +93,21 @@ public class UploadProfilePicActivity extends AppCompatActivity {
                         }
                     });
 
-                    Toast.makeText(UploadProfilePicActivity.this, "Upload Successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadUserProfilePicActivity.this, "Upload Successfully", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(UploadProfilePicActivity.this, UserProfileActivity.class);
+                    Intent intent = new Intent(UploadUserProfilePicActivity.this, UploadUserProfileActivity.class);
                     startActivity(intent);
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(UploadProfilePicActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadUserProfilePicActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             });
         } else {
-            Toast.makeText(UploadProfilePicActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UploadUserProfilePicActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
 
         }
     }

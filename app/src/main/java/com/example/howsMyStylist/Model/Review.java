@@ -11,7 +11,6 @@ public class Review {
     private double price;
     private String date;
     private String review;
-    private String uriImage;
     private double rating;
     private String userId;
 
@@ -26,7 +25,7 @@ public class Review {
     }
 
     public Review(String stylistName, String salonName, String serviceName, double price, String date,
-                  String review, double rating, Uri uriUploadImg, String userId) {
+                  String review, double rating, String userId) {
         this.stylistName = stylistName;
         this.salonName = salonName;
         this.service = serviceName;
@@ -34,7 +33,6 @@ public class Review {
         this.date = date;
         this.rating = rating;
         this.review = review;
-        this.uriImage = uriUploadImg.toString();
         this.userId = userId;
 
     }
@@ -93,14 +91,6 @@ public class Review {
 
     public void setRating(double rating) {
         this.rating = rating;
-    }
-
-    public String getUriImage() {
-        return uriImage;
-    }
-
-    public void setUriImage(Uri uriImage) {
-        this.uriImage = uriImage.toString();
     }
 
     public String getUserId() {

@@ -9,9 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,13 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+public class UploadUserProfileActivity extends AppCompatActivity {
 
-public class UserProfileActivity extends AppCompatActivity {
-
-    private static final String TAG = UserProfileActivity.class.getSimpleName();
+    private static final String TAG = UploadUserProfileActivity.class.getSimpleName();
 
     private TextInputLayout edit_firstName, edit_lastName, edit_email, edit_password,
                             edit_confirm_password, edit_phone, edit_address,
@@ -64,7 +57,7 @@ public class UserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_upload_user_profile);
 
         // Reference to xml
         usernameLabel = findViewById(R.id.usernameLabel);
@@ -83,7 +76,7 @@ public class UserProfileActivity extends AppCompatActivity {
             int month = Integer.parseInt(textSADoB[1]) - 1;
             int year = Integer.parseInt(textSADoB[2]);
             //Date Picker Dialog
-            picker = new DatePickerDialog(UserProfileActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
+            picker = new DatePickerDialog(UploadUserProfileActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                     edit_birthday.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
@@ -102,12 +95,12 @@ public class UserProfileActivity extends AppCompatActivity {
         // Countries
         String[] countries = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe", "Palestine"};
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<>(
-                UserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, countries);
+                UploadUserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, countries);
         edit_country.setAdapter(countryAdapter);
         edit_country.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(UserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadUserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
         });
         // States (Canada)
@@ -115,12 +108,12 @@ public class UserProfileActivity extends AppCompatActivity {
                                        "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut",
                                        "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon"};
         ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
-                UserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, states);
+                UploadUserProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, states);
         edit_state.setAdapter(stateAdapter);
         edit_state.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(UserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadUserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -128,7 +121,7 @@ public class UserProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         if (firebaseUser == null){
-            Toast.makeText(UserProfileActivity.this, "something went wrong!", Toast.LENGTH_LONG).show();
+            Toast.makeText(UploadUserProfileActivity.this, "something went wrong!", Toast.LENGTH_LONG).show();
         } else {
             // Notify user if they have not verified email
             checkIfEmailVerified(firebaseUser);
@@ -140,7 +133,7 @@ public class UserProfileActivity extends AppCompatActivity {
         profile_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserProfileActivity.this,UploadProfilePicActivity.class);
+                Intent intent = new Intent(UploadUserProfileActivity.this, UploadUserProfilePicActivity.class);
                 startActivity(intent);
             }
         });
@@ -163,7 +156,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void showAlertDialog() {
         //Set up alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(UserProfileActivity.this, R.style.AlertDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UploadUserProfileActivity.this, R.style.AlertDialogTheme);
         builder.setTitle("You account is not verified!");
         builder.setMessage("Please verify your email now. Or You may not login without email verification next time.");
         //Open email app if "continue" clicked
@@ -227,18 +220,18 @@ public class UserProfileActivity extends AppCompatActivity {
                     // Set User profile picture (After uploaded)
                     Uri uri = firebaseUser.getPhotoUrl();
                     if (uri != null){
-                        Picasso.with(UserProfileActivity.this).load(uri).into(profile_img);
+                        Picasso.with(UploadUserProfileActivity.this).load(uri).into(profile_img);
                     }
 
                 }else {
-                    Toast.makeText(UserProfileActivity.this, "something went wrong! " +
+                    Toast.makeText(UploadUserProfileActivity.this, "something went wrong! " +
                             "Show profile was canceled", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserProfileActivity.this, "something went wrong! " +
+                Toast.makeText(UploadUserProfileActivity.this, "something went wrong! " +
                         "Show profile was canceled", Toast.LENGTH_LONG).show();
             }
         });
@@ -272,12 +265,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     UserProfileChangeRequest updatableProfileField = new UserProfileChangeRequest.Builder().setDisplayName(_USERNAME).build();
                     firebaseUser.updateProfile(updatableProfileField);
 
-                    Toast.makeText(UserProfileActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadUserProfileActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
                         throw task.getException();
                     } catch (Exception e){
-                        Toast.makeText(UserProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(UploadUserProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }

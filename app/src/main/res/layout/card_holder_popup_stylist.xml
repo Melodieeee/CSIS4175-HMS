@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
+    app:contentPadding="10dp"
+    android:layout_marginBottom="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imv_stylistPhoto"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="80dp"
+            android:src="@drawable/hms_logo2"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="80dp"
+            android:paddingLeft="20dp"
+            android:paddingVertical="10dp"
+            >
+
+            <TextView
+                android:id="@+id/txv_stylistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stylist Name"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txv_salonName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txv_stylistName"
+                android:layout_marginTop="5dp"
+                android:text="Salon Name"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txv_stylistGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/txv_stylistName"
+                android:layout_marginStart="84dp"
+                android:layout_toEndOf="@id/txv_stylistName"
+                android:text="Gender" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

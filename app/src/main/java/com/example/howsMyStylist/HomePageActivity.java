@@ -26,13 +26,19 @@ public class HomePageActivity extends AppCompatActivity {
         //For testing
         Button btnGoReview = findViewById(R.id.btnGoReview);
         btnGoReview.setOnClickListener(v -> {
-            startActivity(new Intent(HomePageActivity.this, UserProfileActivity.class));
+            startActivity(new Intent(HomePageActivity.this, UploadUserProfileActivity.class));
             finish();
         });
 
         Button btnGoProfile = findViewById(R.id.btnGoProfile);
         btnGoProfile.setOnClickListener(v -> {
-            startActivity(new Intent(HomePageActivity.this, UploadActivity.class));
+            startActivity(new Intent(HomePageActivity.this, UploadReviewActivity.class));
+            finish();
+        });
+
+        Button btnGoCreateSalon = findViewById(R.id.btnGoCreateSalon);
+        btnGoCreateSalon.setOnClickListener(v -> {
+            startActivity(new Intent(HomePageActivity.this, UploadSalonProfileActivity.class));
             finish();
         });
 

@@ -1,34 +1,34 @@
 package com.example.howsMyStylist;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
+import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.cottacush.android.currencyedittext.CurrencyEditText;
-import com.cottacush.android.currencyedittext.CurrencyInputWatcher;
+import com.example.howsMyStylist.Adapter.ImagesAdapter;
 import com.example.howsMyStylist.Model.Review;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,40 +36,26 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
-import java.lang.ref.WeakReference;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Currency;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
-public class UploadActivity extends AppCompatActivity {
+public class UploadReviewActivity extends AppCompatActivity {
 
     private CurrencyEditText currencyEditText;
     private EditText edit_stylistName, edit_salonName, edit_serviceName,
                         edit_serviceDate, edit_review;
     private RatingBar ratingBar;
-    private ImageView imgView_photoAdded;
+    private ViewPager viewPager;
+    private final int REQUEST_PERMISSION_CODE = 35;
     private Button btn_addPhoto, btn_submit;
 
     private DatePickerDialog picker;
@@ -80,21 +66,39 @@ public class UploadActivity extends AppCompatActivity {
     private DatabaseReference firebaseDatabase;
     private FirebaseDatabase firebaseInstance;
     private FirebaseUser firebaseUser;
-    ActivityResultLauncher<String> imgFilePicker;
-    private Uri uriUploadImg;
+    private ActivityResultLauncher<String> imgFilePicker;
+    private List<Uri> uriUploadImgs;
+    private ProgressBar progressBar;
+    private int uploadImgCount = 0;
+    private byte[] imageBytes;
 
     private String reviewId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload);
+        setContentView(R.layout.activity_upload_review);
 
+        //onEditListener and PopupWindow
         edit_stylistName = findViewById(R.id.input_stylistName);
         edit_salonName = findViewById(R.id.input_salonName);
+        edit_stylistName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PopupStylistActivity.class);
+                startActivity(intent);
+            }
+        });
+
         edit_serviceName = findViewById(R.id.input_serviceName);
         edit_review = findViewById(R.id.input_review);
         ratingBar = findViewById(R.id.ratingBar);
+
+        //getString from popup activity
+        Intent intent = getIntent();
+        edit_stylistName.setText(intent.getStringExtra("stylistName"));
+        edit_salonName.setText(intent.getStringExtra("salonName"));
 
         //price formatter
         currencyEditText = findViewById(R.id.input_price);
@@ -111,7 +115,7 @@ public class UploadActivity extends AppCompatActivity {
                 int year = calendar.get(Calendar.YEAR);
 
                 //Date Picker Dialog
-                picker = new DatePickerDialog(UploadActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
+                picker = new DatePickerDialog(UploadReviewActivity.this, R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         date = dayOfMonth + "/" + (month + 1) + "/" + year;
@@ -122,32 +126,29 @@ public class UploadActivity extends AppCompatActivity {
             }
         });
 
-        //add photo
-        imgView_photoAdded = findViewById(R.id.imgView_photoAdded);
-        btn_addPhoto = findViewById(R.id.btnAddPhoto);
+        //add images
+        viewPager = findViewById(R.id.viewPager);
+        btn_addPhoto = findViewById(R.id.btnAddImages);
+        progressBar = new ProgressBar(this);
+        uriUploadImgs = new ArrayList<>();
+
         btn_addPhoto.setOnClickListener(v -> {
-            imgFilePicker.launch("image/*");
-            imgView_photoAdded.setVisibility(View.VISIBLE);
-            btn_addPhoto.setText("Choose others");
+            checkUserPermission();
+            if (uriUploadImgs == null) {
+                btn_addPhoto.setText("Add Images");
+                viewPager.setVisibility(View.GONE);
+            } else {
+                btn_addPhoto.setText("Choose others");
+                viewPager.setVisibility(View.VISIBLE);
+            }
         });
 
-        imgFilePicker = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri result) {
-                        uriUploadImg = result;
-                        //imgView_photoAdded.setImageURI(uriUploadImg);
-                        Picasso.with(UploadActivity.this).load(uriUploadImg).into(imgView_photoAdded);
-                    }
-                });
-
-        //click the img to delete it
-        imgView_photoAdded.setOnClickListener(v->{
-            uriUploadImg = null;
-            imgView_photoAdded.setImageURI(uriUploadImg);
-            imgView_photoAdded.setVisibility(View.GONE);
-            btn_addPhoto.setText("Add Photo");
-            Toast.makeText(UploadActivity.this, "Photo deleted", Toast.LENGTH_SHORT).show();
+        imgFilePicker = registerForActivityResult(new ActivityResultContracts.GetMultipleContents(), new ActivityResultCallback<List<Uri>>() {
+            @Override
+            public void onActivityResult(List<Uri> result) {
+                uriUploadImgs = result;
+                setAdapter();
+            }
         });
 
         //submit
@@ -163,57 +164,98 @@ public class UploadActivity extends AppCompatActivity {
 
             //check all required info
             if (TextUtils.isEmpty(stylistName)) {
-                Toast.makeText(UploadActivity.this,
+                Toast.makeText(UploadReviewActivity.this,
                         "Please enter your stylist.", Toast.LENGTH_SHORT).show();
                 edit_stylistName.setError("Stylist's name is required.");
                 edit_stylistName.requestFocus();
             } else if (TextUtils.isEmpty(serviceName)) {
-                Toast.makeText(UploadActivity.this,
+                Toast.makeText(UploadReviewActivity.this,
                         "Please enter the service name.", Toast.LENGTH_SHORT).show();
                 edit_serviceName.setError("Service is required.");
                 edit_serviceName.requestFocus();
-            } else if (TextUtils.isEmpty(date)) { //?
-                Toast.makeText(UploadActivity.this,
+            } else if (TextUtils.isEmpty(date)) {
+                Toast.makeText(UploadReviewActivity.this,
                         "Please select the date.", Toast.LENGTH_SHORT).show();
                 edit_serviceName.setError("Date is required.");
                 edit_serviceName.requestFocus();
             } else if (TextUtils.isEmpty(price.toString())) {
-                Toast.makeText(UploadActivity.this,
+                Toast.makeText(UploadReviewActivity.this,
                         "Please enter the price.", Toast.LENGTH_SHORT).show();
                 currencyEditText.setError("Price is required.");
                 currencyEditText.requestFocus();
             } else if (rating == 0) {
-                Toast.makeText(UploadActivity.this,
+                Toast.makeText(UploadReviewActivity.this,
                         "Please rate your stylist.", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(UploadActivity.this,
+                Toast.makeText(UploadReviewActivity.this,
                         "Request send.", Toast.LENGTH_SHORT).show();
                 uploadReview(stylistName, salonName, serviceName, price, date,
-                                review, rating, uriUploadImg);
+                                review, rating, uriUploadImgs);
             }
         });
     }
 
+    private void checkUserPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION_CODE);
+        } else {
+            pickImages();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImages();
+            } else {
+                Toast.makeText(this,"permission denied",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void pickImages() {
+        imgFilePicker.launch("image/*");
+        if (uriUploadImgs != null) {
+            uriUploadImgs.clear();
+        }
+    }
+
+    private void setAdapter() {
+        ImagesAdapter imagesAdapter = new ImagesAdapter(this, uriUploadImgs);
+        viewPager.setAdapter(imagesAdapter);
+    }
+
+    private void compressImages(List<Uri> uriUploadImgs) {
+        for (int i = 0; i < uriUploadImgs.size(); i++) {
+            try {
+                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriUploadImgs.get(i));
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
+                imageBytes = stream.toByteArray();
+                uploadImagesToFireStorage(imageBytes, uriUploadImgs);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void uploadReview(String stylistName, String salonName, String serviceName, double price, String date,
-                              String review, double rating, Uri uriUploadImg) {
+                              String review, double rating, List<Uri> uriUploadImgs) {
 
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
         Review newReview = new Review(stylistName, serviceName, price, date, rating, firebaseUser.getUid());
-        //salon
+
         if (salonName != null) {
             newReview.setSalonName(salonName);
         }
-        //review
         if (review != null) {
             newReview.setReview(review);
-        }
-        //uploadImg
-        if (uriUploadImg != null) {
-            newReview.setUriImage(uriUploadImg);
-            uploadToFirebase(uriUploadImg);
-
         }
 
         firebaseInstance = FirebaseDatabase.getInstance(); //root
@@ -226,50 +268,52 @@ public class UploadActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    // update to user's reviewList
+                    //uploadImg to be children of review
+                    if (uriUploadImgs != null) {
+                        compressImages(uriUploadImgs);
+                        for (Uri u: uriUploadImgs) {
+                            firebaseDatabase.child(reviewId).child("images").setValue(String.valueOf(u));
+                        }
+                    }
+                    // update the review to user's reviewList
                     firebaseDatabase = firebaseInstance.getReference("User");
                     firebaseDatabase.child(firebaseUser.getUid()).child("reviewIdList").child(reviewId).setValue("stylist id?");
 
-                    Toast.makeText(UploadActivity.this, "Review posted successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadReviewActivity.this, "Review posted successfully!", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(UploadActivity.this, HomePageActivity.class);
+                    Intent intent = new Intent(UploadReviewActivity.this, HomePageActivity.class);
                     // Prevent user back
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(UploadActivity.this, "Review posted failed! Please try again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadReviewActivity.this, "Review posted failed! Please try again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
     }
 
-    private void uploadToFirebase(Uri uriUploadImg){
-        storageReference = FirebaseStorage.getInstance().getReference("UploadedPhotos");
-        StorageReference fileReference = storageReference.child(System.currentTimeMillis() +"." + getFileExtension(uriUploadImg));
-        fileReference.putFile(uriUploadImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadImagesToFireStorage(byte[] imageBytes, List<Uri> uriUploadImgs) {
+        storageReference = FirebaseStorage.getInstance().getReference()
+                .child("ReviewsPhotos");
+        StorageReference fileReference = storageReference
+                .child("images" + System.currentTimeMillis() + ".jpg");
+        fileReference.putBytes(imageBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Toast.makeText(UploadActivity.this,"Uploaded Successfully",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                uploadImgCount += 1;
+                if(uploadImgCount == uriUploadImgs.size()) {
+                    Log.d("upload", "uploaded done");
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(UploadActivity.this, "Uploading Failed", Toast.LENGTH_SHORT);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(UploadReviewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
             }
         });
-    }
-
-    private String getFileExtension(Uri mUri) {
-        ContentResolver cr = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cr.getType(mUri));
     }
 
 }
