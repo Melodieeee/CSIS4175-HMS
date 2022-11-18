@@ -1,5 +1,6 @@
 package com.example.howsMyStylist.Adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.howsMyStylist.Model.Stylist;
 import com.example.howsMyStylist.R;
+import com.example.howsMyStylist.UploadStylistProfileActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -47,10 +54,25 @@ public class PopupStylistAdapter extends RecyclerView.Adapter<PopupStylistAdapte
         String stylistName = stylistList.get(position).getfName() + " " + stylistList.get(position).getlName();
         String stylistGender = stylistList.get(position).getGender();
         String salonName = stylistList.get(position).getSalonName();
-
+        String stylistPhoto = stylistList.get(position).geturiStylistPic();
+        //upload stylist need to save the pic name not the uri
         holder.txvStylistName.setText(stylistName);
         holder.txvStylistGender.setText(stylistGender);
         holder.txvSalonName.setText(salonName);
+        //change the reference to each stylist pic
+        if (!stylistPhoto.isEmpty()) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("StylistPhotos").child(stylistPhoto);
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide.with(holder.imvStylistPhoto.getContext())
+                            .load(downloadUrl.toString())
+                            .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                            .error(R.drawable.ic_baseline_cloud_download_24)
+                            .into(holder.imvStylistPhoto);
+                }
+            });
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

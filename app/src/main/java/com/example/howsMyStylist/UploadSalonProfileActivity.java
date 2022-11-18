@@ -39,18 +39,16 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
 
     private TextInputLayout edit_phone, edit_address, edit_city, edit_zip, edit_webLink, edit_salonName;
     AutoCompleteTextView  edit_country, edit_state;
-    private Button btn_createProfile, btn_cancelCreation, btn_choosePic, btn_uploadPic;
+    private Button btn_createProfile, btn_cancelCreation, btn_choosePic;
 
-    private String _NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _COUNTRY, _STATE;
+    private String _NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _COUNTRY, _STATE, _PHOTO;
     private String salonId;
 
     private DatabaseReference firebaseDatabase;
     private FirebaseDatabase firebaseInstance;
+    private StorageReference storageReference;
 
     private ImageView profile_img;
-    FirebaseAuth auth;
-    private StorageReference storageReference;
-    private FirebaseUser firebaseUser;
     ActivityResultLauncher<String> imgFilePicker;
     private Uri uriImage;
 
@@ -67,6 +65,9 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
         edit_address = findViewById(R.id.input_salonAddress);
         edit_city = findViewById(R.id.input_salonCity);
         edit_zip = findViewById(R.id.input_salonZip);
+
+        //set salon name from UploadStylistProfile
+        edit_salonName.getEditText().setText(getIntent().getStringExtra("stylistName"));
 
         // Set spinner for countries and states
         // Countries
@@ -134,15 +135,12 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
                         "Please enter salon located state", Toast.LENGTH_SHORT).show();
                 edit_state.setError("State is required.");
                 edit_state.requestFocus();
-//            } else if (uriImage != null){
-//                Toast.makeText(UploadSalonProfileActivity.this,
-//                        "Please click upload button to upload image first", Toast.LENGTH_SHORT).show();
             } else {
+                salonId = firebaseDatabase.push().getKey();
+                uploadPic(uriImage);
                 Toast.makeText(UploadSalonProfileActivity.this,
                         "Request send.", Toast.LENGTH_SHORT).show();
-                createSalonProfile(_NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _STATE, _COUNTRY, uriImage);
-                //start HomePage activity
-                startActivity(new Intent(UploadSalonProfileActivity.this, HomePageActivity.class));
+                createSalonProfile(_NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _STATE, _COUNTRY, _PHOTO);
                 finish();
             }
 
@@ -153,19 +151,13 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
         btn_cancelCreation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UploadSalonProfileActivity.this, HomePageActivity.class));
                 finish();
             }
         });
 
-        // Get Current profile id
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-
         // TODO: TO CHOOSE & UPLOAD A PHOTO
         profile_img = findViewById(R.id.salonProfile_img);
         btn_choosePic = findViewById(R.id.btn_salonChoosePic);
-        btn_uploadPic = findViewById(R.id.btn_salonUpload);
 
         storageReference = FirebaseStorage.getInstance().getReference("SalonPhotos");
 
@@ -178,18 +170,14 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
                     uriImage = result;
                     Picasso.with(UploadSalonProfileActivity.this).load(uriImage).into(profile_img);
                 });
-        // Upload the image
-        btn_uploadPic.setOnClickListener(v -> {
-            uploadPic(uriImage);
-        });
-
     }
 
     private void uploadPic(Uri uriImage) {
 
         if (uriImage != null){
-            StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
+            StorageReference fileReference = storageReference.child(salonId +
                     "." + getFileExtension(uriImage));
+            _PHOTO = salonId + "." + getFileExtension(uriImage);
             // Upload Image to Storage
             fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -209,6 +197,7 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
                 }
             });
         }else {
+            _PHOTO = "";
             Toast.makeText(UploadSalonProfileActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -220,11 +209,9 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void createSalonProfile(String name, String phone, String web, String address, String city, String zip, String state, String country, Uri uriImage) {
-        salonId = firebaseDatabase.push().getKey();
-
-        Salon newSalon = new Salon(name, phone, address, country, state, city, zip, web, String.valueOf(uriImage));
-
+    private void createSalonProfile(String name, String phone, String web, String address, String city, String zip, String state, String country, String salonPhoto) {
+        // String uriImageString = String.valueOf(uriImage);
+        Salon newSalon = new Salon(name, phone, address, country, state, city, zip, web, salonPhoto);
         firebaseDatabase.child(salonId).setValue(newSalon);
     }
 

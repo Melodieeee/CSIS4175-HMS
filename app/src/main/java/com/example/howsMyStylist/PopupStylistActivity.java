@@ -61,8 +61,8 @@ public class PopupStylistActivity extends Activity implements PopupStylistAdapte
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the status bar is hidden, so hide that too if necessary.
-//        ActionBar actionBar = getActionBar();
-//        actionBar.hide();
+        //        ActionBar actionBar = getActionBar();
+        //        actionBar.hide();
 
         // recyclerview
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Stylist");
@@ -75,7 +75,6 @@ public class PopupStylistActivity extends Activity implements PopupStylistAdapte
             public void onClick(View v) {
                 Intent intent = new Intent(PopupStylistActivity.this, UploadStylistProfileActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

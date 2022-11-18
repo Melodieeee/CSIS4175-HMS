@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -51,8 +52,12 @@ public class UploadUserProfileActivity extends AppCompatActivity {
     String _USERNAME, _EMAIL, _PHONE, _PWD, _DOB,
             _FIRSTNAME, _LASTNAME, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY,
             _REVIEW, _FAVORITE;
-    FirebaseAuth auth;
 
+    DataSnapshot reviewSnapshot;
+
+    // Get data from firebase
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = auth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                 Toast.makeText(UploadUserProfileActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
             }
         });
+
         // States (Canada)
         String[] states = new String[]{"Alberta", "British Columbia", "Manitoba", "New Brunswick",
                                        "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut",
@@ -117,9 +123,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
             }
         });
 
-        // Get data from firebase
-        auth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = auth.getCurrentUser();
+        // show profile info
         if (firebaseUser == null){
             Toast.makeText(UploadUserProfileActivity.this, "something went wrong!", Toast.LENGTH_LONG).show();
         } else {
@@ -135,6 +139,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(UploadUserProfileActivity.this, UploadUserProfilePicActivity.class);
                 startActivity(intent);
+                //finish();
             }
         });
 
@@ -167,6 +172,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                 intent.addCategory(Intent.CATEGORY_APP_EMAIL);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //open in a new window
                 startActivity(intent);
+                finish();
             }
         });
         //Create AlertDialog
@@ -189,6 +195,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     // Set data for each fields
                     _USERNAME = firebaseUser.getDisplayName();
                     _REVIEW = String.valueOf(snapshot.child("reviewIdList").getChildrenCount());
+                    reviewSnapshot = snapshot.child("reviewIdList");
                     _EMAIL = firebaseUser.getEmail();
                     _PHONE = user.getPhone();
 //                    _PWD = user.pwd;
@@ -217,11 +224,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     edit_country.setText(_COUNTRY);
                     edit_state.setText(_STATE);
 
-                    // Set User profile picture (After uploaded)
-                    Uri uri = firebaseUser.getPhotoUrl();
-                    if (uri != null){
-                        Picasso.with(UploadUserProfileActivity.this).load(uri).into(profile_img);
-                    }
+
 
                 }else {
                     Toast.makeText(UploadUserProfileActivity.this, "something went wrong! " +
@@ -235,6 +238,17 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                         "Show profile was canceled", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Set User profile picture (After uploaded)
+        Uri uri = firebaseUser.getPhotoUrl();
+        if (uri != null){
+            Picasso.with(UploadUserProfileActivity.this).load(uri).into(profile_img);
+        }
+
     }
 
     private void updateProfile(FirebaseUser firebaseUser) {
@@ -264,8 +278,17 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     // Setting new fields
                     UserProfileChangeRequest updatableProfileField = new UserProfileChangeRequest.Builder().setDisplayName(_USERNAME).build();
                     firebaseUser.updateProfile(updatableProfileField);
-
-                    Toast.makeText(UploadUserProfileActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
+                    reference.child(userId).child("reviewIdList").setValue(reviewSnapshot.getValue()).addOnCompleteListener( t -> {
+                        if (t.isSuccessful()) {
+                            Toast.makeText(UploadUserProfileActivity.this, "Update Successfully!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            try {
+                                throw task.getException();
+                            } catch (Exception e){
+                                Toast.makeText(UploadUserProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 } else {
                     try {
                         throw task.getException();

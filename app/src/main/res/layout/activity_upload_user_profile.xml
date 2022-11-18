@@ -66,11 +66,11 @@
                         android:id="@+id/review_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="23sp"
+                        android:layout_centerInParent="true"
                         android:fontFamily="sans-serif-condensed-light"
                         android:includeFontPadding="false"
-                        android:layout_centerInParent="true"/>
+                        android:text="0"
+                        android:textSize="23sp" />
 
                     <TextView
                         android:id="@+id/review_desc"

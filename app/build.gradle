@@ -58,4 +58,7 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.cottacush:CurrencyEditText:0.0.10'
+    // FirebaseUI Storage only
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
 }

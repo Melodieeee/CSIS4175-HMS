@@ -62,17 +62,18 @@ public class UploadReviewActivity extends AppCompatActivity {
     private String date;
 
     private FirebaseAuth auth;
-    private StorageReference storageReference;
+    private StorageReference reviewReference;
     private DatabaseReference firebaseDatabase;
     private FirebaseDatabase firebaseInstance;
     private FirebaseUser firebaseUser;
     private ActivityResultLauncher<String> imgFilePicker;
     private List<Uri> uriUploadImgs;
-    private ProgressBar progressBar;
     private int uploadImgCount = 0;
     private byte[] imageBytes;
 
     private String reviewId;
+    private String _PHOTO;
+    private List<String> photosList;
 
 
     @Override
@@ -129,7 +130,6 @@ public class UploadReviewActivity extends AppCompatActivity {
         //add images
         viewPager = findViewById(R.id.viewPager);
         btn_addPhoto = findViewById(R.id.btnAddImages);
-        progressBar = new ProgressBar(this);
         uriUploadImgs = new ArrayList<>();
 
         btn_addPhoto.setOnClickListener(v -> {
@@ -189,8 +189,11 @@ public class UploadReviewActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(UploadReviewActivity.this,
                         "Request send.", Toast.LENGTH_SHORT).show();
+                firebaseInstance = FirebaseDatabase.getInstance();
+                firebaseDatabase = firebaseInstance.getReference("Review");  //Review -> reviewId -> newReview
+                reviewId = firebaseDatabase.push().getKey();
                 uploadReview(stylistName, salonName, serviceName, price, date,
-                                review, rating, uriUploadImgs);
+                                review, rating, uriUploadImgs);;
             }
         });
     }
@@ -230,12 +233,15 @@ public class UploadReviewActivity extends AppCompatActivity {
     }
 
     private void compressImages(List<Uri> uriUploadImgs) {
+        photosList = new ArrayList<>();
         for (int i = 0; i < uriUploadImgs.size(); i++) {
             try {
                 Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uriUploadImgs.get(i));
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 imageBitmap.compress(Bitmap.CompressFormat.JPEG, 60, stream);
                 imageBytes = stream.toByteArray();
+                _PHOTO = reviewId + "_" + i + ".jpg";
+                photosList.add(_PHOTO);
                 uploadImagesToFireStorage(imageBytes, uriUploadImgs);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -258,21 +264,17 @@ public class UploadReviewActivity extends AppCompatActivity {
             newReview.setReview(review);
         }
 
-        firebaseInstance = FirebaseDatabase.getInstance(); //root
-        firebaseDatabase = firebaseInstance.getReference("Review");  //Review -> reviewId -> newReview
-        if(TextUtils.isEmpty(reviewId)) {
-            reviewId = firebaseDatabase.push().getKey();
-        }
-
         firebaseDatabase.child(reviewId).setValue(newReview).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
                     //uploadImg to be children of review
                     if (uriUploadImgs != null) {
-                        compressImages(uriUploadImgs);
-                        for (Uri u: uriUploadImgs) {
-                            firebaseDatabase.child(reviewId).child("images").setValue(String.valueOf(u));
+                        compressImages(uriUploadImgs); //compress and load to FireStorage
+                        int i = 0;
+                        for (String photo: photosList) {
+                            firebaseDatabase.child(reviewId).child("images").child(String.valueOf(i)).setValue(photo);
+                            i++;
                         }
                     }
                     // update the review to user's reviewList
@@ -291,18 +293,16 @@ public class UploadReviewActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void uploadImagesToFireStorage(byte[] imageBytes, List<Uri> uriUploadImgs) {
-        storageReference = FirebaseStorage.getInstance().getReference()
-                .child("ReviewsPhotos");
-        StorageReference fileReference = storageReference
-                .child("images" + System.currentTimeMillis() + ".jpg");
-        fileReference.putBytes(imageBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        reviewReference = FirebaseStorage.getInstance().getReference().child("ReviewPhotos");
+        StorageReference imgReference = reviewReference.child(_PHOTO);
+
+        imgReference.putBytes(imageBytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                uploadImgCount += 1;
+                uploadImgCount++;
                 if(uploadImgCount == uriUploadImgs.size()) {
                     Log.d("upload", "uploaded done");
                 }
@@ -310,7 +310,6 @@ public class UploadReviewActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                progressBar.setVisibility(View.GONE);
                 Toast.makeText(UploadReviewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
             }
         });
