@@ -1,7 +1,5 @@
 package com.example.howsMyStylist.Model;
 
-import android.net.Uri;
-
 public class Stylist {
 
     private String fName;
@@ -12,8 +10,6 @@ public class Stylist {
     private String phone;
     private double avgRating;
     private String email;
-
-
 
     public Stylist(String fName, String lName, String gender, String salonName) {
         this.fName = fName;

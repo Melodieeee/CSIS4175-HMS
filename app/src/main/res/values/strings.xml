@@ -21,6 +21,10 @@
     <string name="birthday">Birthday (dd/mm/yyyy)</string>
     <string name="choose_picture">Choose Picture</string>
     <string name="upload">Upload</string>
+    <string name="dialog_createSalon_message">The salon you entered does not exist in How\'s My Stylist now.
+        Please help us create the salon profile first!
+    </string>
+    <string name="dialog_createSalon_title">Go To Create Salon\'s Profile</string>
 
-
+    <string name="ok">Ok</string>
 </resources>

@@ -1,7 +1,5 @@
 package com.example.howsMyStylist.Model;
 
-import android.net.Uri;
-
 public class Salon {
     private String salonName;
     private String phone;
@@ -48,7 +46,6 @@ public class Salon {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
 
     public String getAddress() {
         return address;
@@ -98,16 +95,8 @@ public class Salon {
         this.webLink = webLink;
     }
 
-    public void setUriImage(String uriImage) {
-        this.uriImage = uriImage;
-    }
-
     public String getUriImage() {
         return uriImage;
-    }
-
-    public void setUriImage(Uri uriImage) {
-        this.uriImage = uriImage.toString();
     }
 
 }

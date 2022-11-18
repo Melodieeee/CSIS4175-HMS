@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
-    app:contentPadding="10dp"
+    app:contentPadding="5dp"
     android:layout_marginBottom="10dp">
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,23 +16,23 @@
         <ImageView
             android:id="@+id/imv_stylistPhoto"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="80dp"
-            android:src="@drawable/hms_logo2"/>
+            android:layout_weight="2"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/hms_logo2" />
+
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="80dp"
+            android:layout_weight="6"
+            android:layout_height="70dp"
             android:paddingLeft="20dp"
-            android:paddingVertical="10dp"
-            >
-
+            android:paddingVertical="5dp">
             <TextView
                 android:id="@+id/txv_stylistName"
-                android:layout_width="wrap_content"
+                android:layout_width="136dp"
                 android:layout_height="wrap_content"
                 android:text="Stylist Name"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -40,19 +40,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txv_stylistName"
-                android:layout_marginTop="5dp"
                 android:text="Salon Name"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/txv_stylistGender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/txv_stylistName"
-                android:layout_marginStart="84dp"
-                android:layout_toEndOf="@id/txv_stylistName"
-                android:text="Gender" />
+                android:textSize="15sp" />
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/txv_stylistGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="Gender" />
 
 
     </LinearLayout>

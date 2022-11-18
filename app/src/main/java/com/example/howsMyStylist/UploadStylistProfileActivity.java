@@ -3,10 +3,12 @@ package com.example.howsMyStylist;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,44 +55,25 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
 
     private TextInputLayout edit_firstName, edit_lastName, edit_phone, edit_email;
     AutoCompleteTextView edit_salon;
-    private Button btn_createProfile, btn_cancelCreation, btn_choosePic, btn_uploadPic;
+    private Button btn_createProfile, btn_cancelCreation, btn_choosePic;
 
-    private String _FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON;
+    private String _FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _PHOTO;
     private String stylistId;
 
-    private DatabaseReference mFirebaseDatabase;
+    private DatabaseReference stylistDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
     private ImageView profile_img;
-    FirebaseAuth auth;
     private StorageReference storageReference;
-    private FirebaseUser firebaseUser;
     ActivityResultLauncher<String> imgFilePicker;
     private Uri uriImage;
-    private Boolean isUploaded = false;
     private List<String> salonNameList;
 
     // For radio button
     private static final String other = "Other";
     private static final String male = "Male";
     private static final String female = "Female";
-    public void onRadioButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-        switch(view.getId()) {
-            case R.id.radioOption_male:
-                if (checked)
-                    _GENDER = male;
-                break;
-            case R.id.radioOption_female:
-                if (checked)
-                    _GENDER = female;
-                break;
-            case R.id.radioOption_other:
-                if (checked)
-                    _GENDER = other;
-                break;
-        }
-    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,35 +89,39 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
         btn_createProfile = findViewById(R.id.btn_createStylistProfile);
         btn_cancelCreation = findViewById(R.id.btn_stylistCreationCancel);
         btn_choosePic = findViewById(R.id.btn_stylistChoosePic);
-        btn_uploadPic = findViewById(R.id.btn_stylistUploadPic);
+        profile_img = findViewById(R.id.stylistProfile_img);
 
-//        //edit_salon clicked ---> not work
-//        edit_salon.setOnClickListener( v -> {
-//            //set salon name from firebase
-//            DatabaseReference salonDatabase = FirebaseDatabase.getInstance().getReference("Salon");
-//            if (salonDatabase != null) {
-//                salonDatabase.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        if(snapshot.exists()) {
-//                            salonNameList = new ArrayList<>();
-//                            for(DataSnapshot ds: snapshot.getChildren()) {
-//                                salonNameList.add(ds.getValue(Stylist.class).getSalonName());
-//                            }
-//                        }
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(UploadStylistProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
+        // TODO: Edit Salon Name
+        //edit_salon clicked - list existed salon name
+        edit_salon.setOnClickListener( v -> {
+            //set salon name from firebase
+            DatabaseReference salonDatabase = FirebaseDatabase.getInstance().getReference("Salon");
 
+                salonDatabase.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            salonNameList = new ArrayList<>();
+                            Log.d("DBsnapshot", String.valueOf(snapshot.getChildrenCount()));
+                            for(DataSnapshot ds: snapshot.getChildren()) {
+                                salonNameList.add(ds.getValue(Salon.class).getSalonName());
+                            }
+                            Log.d("DBsnapshot", String.valueOf(salonNameList.size()));
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(UploadStylistProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
-                UploadStylistProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, salonNameList);
-        edit_salon.setAdapter(stateAdapter);
+            if (salonNameList != null) {
+                ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
+                        UploadStylistProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, salonNameList);
+                edit_salon.setAdapter(stateAdapter);
+            }
+        });
+
         edit_salon.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -142,18 +129,17 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: TO CANCEL THE ACTIVITY AND BACK TO HOME_ACTIVITY
+        // TODO: TO CANCEL THE ACTIVITY AND BACK TO LAST STEP(POPUPSTYLISTACTIVITY)
         btn_cancelCreation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UploadStylistProfileActivity.this, HomePageActivity.class));
-                finish();
+                finish();// back to last step
             }
         });
 
         // Get Firebase Instance
         mFirebaseInstance = FirebaseDatabase.getInstance();
-        mFirebaseDatabase = mFirebaseInstance.getReference("Stylist");
+        stylistDatabase = mFirebaseInstance.getReference("Stylist");
 
         // TODO: TO CREATE STYLIST PROFILE
         btn_createProfile.setOnClickListener(new View.OnClickListener() {
@@ -176,48 +162,37 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                             "Please enter stylist last name", Toast.LENGTH_SHORT).show();
                     edit_lastName.setError("Last Name is required.");
                     edit_lastName.requestFocus();
-//                } else if (uriImage != null){
-//                    if(!isUploaded) {
-//                        Toast.makeText(UploadStylistProfileActivity.this,
-//                                "Please click upload button to upload image first", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(UploadStylistProfileActivity.this,
-//                                "Request send.", Toast.LENGTH_SHORT).show();
-//                        createStylistProfile(_FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, uriImage);
-//                        Toast.makeText(UploadStylistProfileActivity.this,
-//                                "File created.", Toast.LENGTH_SHORT).show();
-//                        //start HomePage activity
-//                        startActivity(new Intent(UploadStylistProfileActivity.this, HomePageActivity.class));
-//                        finish();
-//                    }
+                } else if (!_SALON.equals("") && !salonNameList.contains(_SALON)) { // salon not in DB -> ask user to create first
+                        AlertDialog.Builder builder = new AlertDialog.Builder(UploadStylistProfileActivity.this);
+                        builder.setMessage(R.string.dialog_createSalon_message)
+                                .setTitle(R.string.dialog_createSalon_title)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User clicked OK button
+                                        Intent intent = new Intent(UploadStylistProfileActivity.this, UploadSalonProfileActivity.class);
+                                        intent.putExtra("stylistName", _SALON);
+                                        startActivity(intent);
+                                    }
+                                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+                                    }
+                                });
+                        AlertDialog dialogCreateSalon = builder.create();
+                        dialogCreateSalon.show();
                 } else {
+                    stylistId = stylistDatabase.push().getKey();
+                    uploadPic(uriImage);
                     Toast.makeText(UploadStylistProfileActivity.this,
                             "Request send.", Toast.LENGTH_SHORT).show();
-                    createStylistProfile(_FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, uriImage, 0);
-                    //start HomePage activity
-                    startActivity(new Intent(UploadStylistProfileActivity.this, HomePageActivity.class));
+                    createStylistProfile(_FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _PHOTO, 0);
                     finish();
                 }
             }
         });
 
-        //TODO: TO UPLOAD A PICTURE
-//        btn_choosePic.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(UploadStylistProfileActivity.this, UploadUserProfilePicActivity.class));
-//            }
-//        });
-
-        profile_img = findViewById(R.id.stylistProfile_img);
-        btn_choosePic = findViewById(R.id.btn_stylistChoosePic);
-        btn_uploadPic = findViewById(R.id.btn_stylistUploadPic);
-
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-
         storageReference = FirebaseStorage.getInstance().getReference("StylistPhotos");
-        // Select a image
+        // Select a image and set to imgView
         btn_choosePic.setOnClickListener(v -> {
             imgFilePicker.launch("image/*");
         });
@@ -226,25 +201,38 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                     uriImage = result;
                     Picasso.with(UploadStylistProfileActivity.this).load(uriImage).into(profile_img);
                 });
-        // Upload
-        btn_uploadPic.setOnClickListener(v -> {
-            uploadPic(uriImage);
-        });
     }
 
-    private void createStylistProfile(String firstname, String lastname, String phone, String email, String gender, String salonName, Uri uriImage, double avgRating) {
-        stylistId = mFirebaseDatabase.push().getKey();
-        Stylist newStylist = new Stylist(firstname, lastname, phone, email, gender, salonName, String.valueOf(uriImage), avgRating);
-        mFirebaseDatabase.child(stylistId).setValue(newStylist);
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {  //-1: not selected; 1,2,3
+            case R.id.radioOption_male:
+                if (checked)
+                    _GENDER = male;
+                break;
+            case R.id.radioOption_female:
+                if (checked)
+                    _GENDER = female;
+                break;
+            case R.id.radioOption_other:
+                if (checked)
+                    _GENDER = other;
+                break;
+        }
+    }
 
-//        addUserChangeListener();
+    private void createStylistProfile(String firstname, String lastname, String phone, String email, String gender, String salonName, String stylistPhoto, double avgRating) {
+//        stylistId = stylistDatabase.push().getKey();
+        Stylist newStylist = new Stylist(firstname, lastname, phone, email, gender, salonName, stylistPhoto, avgRating);
+        stylistDatabase.child(stylistId).setValue(newStylist);
     }
 
     private void uploadPic(Uri uriImage) {
 
         if (uriImage != null){
-            StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
+            StorageReference fileReference = storageReference.child(stylistId +
                     "." + getFileExtension(uriImage));
+            _PHOTO = stylistId + "." + getFileExtension(uriImage);
             // Upload Image to Storage
             fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -253,7 +241,6 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             Toast.makeText(UploadStylistProfileActivity.this,"Uploaded Successfully",Toast.LENGTH_SHORT).show();
-                            isUploaded = true;
                         }
                     });
                 }
@@ -264,6 +251,7 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                 }
             });
         }else {
+            _PHOTO = "";
             Toast.makeText(UploadStylistProfileActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
         }
     }
@@ -274,23 +262,4 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
-
-//    private void addUserChangeListener() {
-//        mFirebaseDatabase.child(stylistId).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Stylist stylist = snapshot.getValue(Stylist.class);
-//
-//                if (stylist == null) {
-//                    Log.e(TAG, "User data is null");
-//                    return;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.e(TAG, "Failed to read user.");
-//            }
-//        });
-//    }
 }

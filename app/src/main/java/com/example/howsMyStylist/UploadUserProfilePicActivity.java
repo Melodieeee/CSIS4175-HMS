@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,14 +46,14 @@ public class UploadUserProfilePicActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-        storageReference = FirebaseStorage.getInstance().getReference("DisplayPics");
+        storageReference = FirebaseStorage.getInstance().getReference("UserPics");
 
         Uri uri = firebaseUser.getPhotoUrl();
 
         // Set User's current preview image in ImageView (if uploaded already)
         // Regular URIs.
-        Picasso.with(UploadUserProfilePicActivity.this).load(uri).into(imageViewUploadPic);
-
+//        Picasso.with(UploadUserProfilePicActivity.this).load(uri).into(imageViewUploadPic);
+        Glide.with(UploadUserProfilePicActivity.this).load(uri).into(imageViewUploadPic);
         // Choose image to upload
         btnUploadPicChoose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,7 @@ public class UploadUserProfilePicActivity extends AppCompatActivity {
                     "." + getFileExtension(uriImage));
 
             // Upload Image to Storage
+            fileReference.delete();
             fileReference.putFile(uriImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -85,7 +87,6 @@ public class UploadUserProfilePicActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
                             Uri downloadUri = uri;
-                            firebaseUser = auth.getCurrentUser();
                             //Set the display image of the user after uploaded
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest
                                     .Builder().setPhotoUri(downloadUri).build();
@@ -94,21 +95,16 @@ public class UploadUserProfilePicActivity extends AppCompatActivity {
                     });
 
                     Toast.makeText(UploadUserProfilePicActivity.this, "Upload Successfully", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(UploadUserProfilePicActivity.this, UploadUserProfileActivity.class);
-                    startActivity(intent);
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(UploadUserProfilePicActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
                 }
             });
         } else {
             Toast.makeText(UploadUserProfilePicActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
-
         }
     }
 
