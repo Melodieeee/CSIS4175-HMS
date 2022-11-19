@@ -10,9 +10,7 @@ app:cardElevation="5dp"
 android:outlineAmbientShadowColor="@color/deep_blue"
 android:outlineSpotShadowColor="@color/deep_blue">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -21,7 +19,8 @@ android:outlineSpotShadowColor="@color/deep_blue">
         android:id="@+id/reviewImage"
         android:layout_width="match_parent"
         android:layout_height="125dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,10 +36,10 @@ android:outlineSpotShadowColor="@color/deep_blue">
 
             <ImageView
                 android:id="@+id/userProfilePic"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/hms_logo2" />
 
             <TextView
                 android:id="@+id/userName"
@@ -48,7 +47,7 @@ android:outlineSpotShadowColor="@color/deep_blue">
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="title"
-                android:textSize="15dp"
+                android:textSize="10dp"
                 android:textColor="@color/deep_blue"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -69,9 +68,10 @@ android:outlineSpotShadowColor="@color/deep_blue">
         android:layout_height="wrap_content"
         android:text="this will be the comment"
         android:textSize="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        android:textAlignment="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp" />
 
 
 </LinearLayout>

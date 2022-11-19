@@ -1,13 +1,10 @@
 package com.example.howsMyStylist.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -17,20 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;;
 
 import com.bumptech.glide.Glide;
 import com.example.howsMyStylist.Model.Review;
-import com.example.howsMyStylist.Model.Salon;
-import com.example.howsMyStylist.Model.Stylist;
-import com.example.howsMyStylist.Model.User;
 import com.example.howsMyStylist.R;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -47,7 +34,7 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
     @NonNull
     @Override
     public PopularReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.viewholder_review, parent, false);
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_holder_review, parent, false);
         return new PopularReviewViewHolder(inflate);
     }
 
@@ -56,6 +43,7 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
         Review review = list.get(position);
 
         holder.name.setText(review.getUsername());
+        holder.reviewString.setText(review.getReview());
 
         StorageReference reviewImageReference = FirebaseStorage.getInstance().getReference("ReviewPhotos").child(review.getImages().get(0));
         reviewImageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
