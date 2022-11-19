@@ -10,6 +10,7 @@ public class User {
     private String password;
     private String email;
     private String birth;
+    private String profilePic;
     private String address;
     private String country;
     private String state;
@@ -35,7 +36,7 @@ public class User {
         this.lname = lastname;
     }
 
-    public User(String firstname, String lastname, String dob, String phone, String address, String city, String state, String zip, String country) {
+    public User(String firstname, String lastname, String dob, String phone, String profilePic, String address, String city, String state, String zip, String country) {
         this.fname = firstname;
         this.lname = lastname;
         this.birth = dob;
@@ -103,6 +104,10 @@ public class User {
     public void setBirth(String birth) {
         this.birth = birth;
     }
+
+    public String getProfilePic() { return profilePic; }
+
+    public void setProfilePic(String profilePic) { this.profilePic = profilePic; }
 
     public String getCountry() {
         return country;

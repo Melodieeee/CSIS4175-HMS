@@ -2,6 +2,7 @@ package com.example.howsMyStylist.Model;
 
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Review {
@@ -13,15 +14,20 @@ public class Review {
     private String review;
     private double rating;
     private String userId;
+    private String username;
+    private String userProfilePic;
+    private ArrayList<String> images;
 
     public Review(){};
-    public Review(String stylistName, String service, double price, String date, double rating, String userId) {
+    public Review(String stylistName, String service, double price, String date, double rating, String userId, String username, String userProfilePic) {
         this.stylistName = stylistName;
         this.service = service;
         this.price = price;
         this.date = date;
         this.rating = rating;
         this.userId = userId;
+        this.username = username;
+        this.userProfilePic = userProfilePic;
     }
 
     public Review(String stylistName, String salonName, String serviceName, double price, String date,
@@ -73,7 +79,7 @@ public class Review {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date.toString();
     }
 
@@ -93,8 +99,17 @@ public class Review {
         this.rating = rating;
     }
 
+    public String getUserProfilePic() { return userProfilePic; }
+
+    public void setUserProfilePic(String userProfilePic) { this.userProfilePic = userProfilePic; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
+
     public String getUserId() {
         return userId;
     }
 
+    public ArrayList<String> getImages() { return images;}
 }

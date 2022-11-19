@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FeedbackActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp">
+
+        <TextView
+            android:id="@+id/tvFeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feedback"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="@color/deep_blue"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/gotfeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Got feedback, concerns or complaints?\nSaw some disturbing reviews or hate reviews?\nSend it to us and we will get back to ASAP!\nYour feedback is what drives our app."
+            android:textSize="18dp"
+            android:layout_marginTop="50dp"
+            android:lineSpacingExtra="10dp"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_gravity="center"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_feedback"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:background="@drawable/btn_login"
+            android:text="Send Feedback"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feedback may take up to 5 business days to get replied."
+            android:textAlignment="center"
+            android:textSize="10dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"/>
+
+    </LinearLayout>
+
+    <!--  navbar  -->
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabCradleMargin="5dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_nav_menu"
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            android:layout_marginEnd="20dp"
+            app:itemIconTint="@color/deep_blue"
+            app:itemTextColor="@color/deep_blue"/>
+
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_24"
+        app:tint="@color/white"
+        app:layout_anchor="@id/bottomAppBar" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
