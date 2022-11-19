@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -34,6 +35,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -196,6 +199,28 @@ public class UploadReviewActivity extends AppCompatActivity {
                                 review, rating, uriUploadImgs);;
             }
         });
+
+        // Initialize navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home:
+                        startActivity(new Intent(UploadReviewActivity.this, HomePageActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.settings:
+                        startActivity(new Intent(UploadReviewActivity.this, UploadUserProfileActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void checkUserPermission() {
@@ -255,7 +280,9 @@ public class UploadReviewActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-        Review newReview = new Review(stylistName, serviceName, price, date, rating, firebaseUser.getUid());
+        String pic = String.valueOf(firebaseUser.getPhotoUrl());
+
+        Review newReview = new Review(stylistName, serviceName, price, date, rating, firebaseUser.getUid(), firebaseUser.getDisplayName(), pic);
 
         if (salonName != null) {
             newReview.setSalonName(salonName);

@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 import com.example.howsMyStylist.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -47,11 +50,11 @@ public class UploadUserProfileActivity extends AppCompatActivity {
     private EditText edit_birthday;
     private DatePickerDialog picker;
     private ImageView profile_img;
-    Button btn_update;
+    Button btn_update, btn_logout;
 
     String _USERNAME, _EMAIL, _PHONE, _PWD, _DOB,
             _FIRSTNAME, _LASTNAME, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY,
-            _REVIEW, _FAVORITE;
+            _REVIEW, _FAVORITE, _PROFILEPIC;
 
     DataSnapshot reviewSnapshot;
 
@@ -149,6 +152,48 @@ public class UploadUserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 updateProfile(firebaseUser);
+            }
+        });
+
+        btn_logout = findViewById(R.id.btn_logout);
+        btn_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                auth.signOut();
+                Toast.makeText(UploadUserProfileActivity.this,"Logged Out", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(UploadUserProfileActivity.this, LoginActivity.class));
+                finish();
+            }
+        });
+
+        // Initialize navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        // Home is selected
+        bottomNavigationView.setSelectedItemId(R.id.settings);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.home:
+                        startActivity(new Intent(UploadUserProfileActivity.this, HomePageActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.feedback:
+                        startActivity(new Intent(UploadUserProfileActivity.this, FeedbackActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(UploadUserProfileActivity.this, UploadReviewActivity.class));
             }
         });
     }
@@ -264,9 +309,10 @@ public class UploadUserProfileActivity extends AppCompatActivity {
         _ZIP = edit_zip.getEditText().getText().toString();
         _STATE = edit_state.getText().toString();
         _COUNTRY = edit_country.getText().toString();
+        _PROFILEPIC = String.valueOf(firebaseUser.getPhotoUrl());
 
         User user =
-                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
+                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _PROFILEPIC, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
 
         //Extracting User Reference from Database for "User"
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");
