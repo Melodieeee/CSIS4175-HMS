@@ -1,18 +1,17 @@
 package com.example.howsMyStylist;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.howsMyStylist.Adapter.PopupStylistAdapter;
@@ -26,35 +25,20 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PopupStylistActivity extends Activity implements PopupStylistAdapter.onListItemClick {
+public class ChooseStylistActivity extends AppCompatActivity implements PopupStylistAdapter.onListItemClick {
 
     DatabaseReference databaseReference;
     List<Stylist> stylistList;
     RecyclerView stylistCardRecyclerView;
     SearchView searchView;
     String stylistName, salonName;
-    TextView txv_createStylist;
+    Button btn_createStylist;
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_popup_stylist);
-
-        // set the pop up window's size
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-
-        getWindow().setLayout((int) (width*.8), (int) (height*.7));
-
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.gravity = Gravity.CENTER;
-        params.x = 0;
-        params.y = -20;
-
-        getWindow().setAttributes(params);
+        setContentView(R.layout.activity_choose_stylist);
 
         // Hide the status bar.
         View decorView = getWindow().getDecorView();
@@ -69,11 +53,11 @@ public class PopupStylistActivity extends Activity implements PopupStylistAdapte
         stylistCardRecyclerView = findViewById(R.id.rv_stylistCard);
         searchView = findViewById(R.id.searchView_stylistAndSalon);
         // click txt to open create stylist page
-        txv_createStylist = findViewById(R.id.txv_createStylist);
-        txv_createStylist.setOnClickListener(new View.OnClickListener() {
+        btn_createStylist = findViewById(R.id.btn_createStylist);
+        btn_createStylist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PopupStylistActivity.this, UploadStylistProfileActivity.class);
+                Intent intent = new Intent(ChooseStylistActivity.this, UploadStylistProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -88,23 +72,23 @@ public class PopupStylistActivity extends Activity implements PopupStylistAdapte
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()) {
-                         stylistList = new ArrayList<>();
-                         for(DataSnapshot ds: snapshot.getChildren()) {
+                        stylistList = new ArrayList<>();
+                        for(DataSnapshot ds: snapshot.getChildren()) {
 //                             Stylist catchStylist = ds.getValue(Stylist.class);
 //                             stylistList.add(catchStylist);
-                             stylistList.add(ds.getValue(Stylist.class));
-                         }
-                         PopupStylistAdapter adapter = new PopupStylistAdapter(stylistList);
-                         stylistCardRecyclerView.setLayoutManager(new LinearLayoutManager(PopupStylistActivity.this));
-                         stylistCardRecyclerView.setAdapter(adapter);
-                         // pass selected data to the activity
-                         adapter.setmListenr(PopupStylistActivity.this);
+                            stylistList.add(ds.getValue(Stylist.class));
+                        }
+                        PopupStylistAdapter adapter = new PopupStylistAdapter(stylistList);
+                        stylistCardRecyclerView.setLayoutManager(new LinearLayoutManager(ChooseStylistActivity.this));
+                        stylistCardRecyclerView.setAdapter(adapter);
+                        // pass selected data to the activity
+                        adapter.setmListenr(ChooseStylistActivity.this);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(PopupStylistActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChooseStylistActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -142,7 +126,7 @@ public class PopupStylistActivity extends Activity implements PopupStylistAdapte
     public void onStylistChosen(String stylistName, String salonName) {
         this.stylistName = stylistName;
         this.salonName = salonName;
-        Intent intent = new Intent(PopupStylistActivity.this, UploadReviewActivity.class);
+        Intent intent = new Intent(ChooseStylistActivity.this, UploadReviewActivity.class);
         intent.putExtra("stylistName", stylistName);
         intent.putExtra("salonName", salonName);
         startActivity(intent);

@@ -45,9 +45,9 @@ public class HomePageActivity extends AppCompatActivity {
     RecyclerView stylistRecyclerView;
     PopularStylistAdapter popularStylistAdapter;
 
-//    ArrayList<Salon> salonList;
-//    RecyclerView salonRecyclerView;
-//    PopularSalonAdapter popularSalonAdapter;
+    ArrayList<Salon> salonList;
+    RecyclerView salonRecyclerView;
+    PopularSalonAdapter popularSalonAdapter;
 
     ArrayList<Review> reviewList;
     RecyclerView reviewRecyclerView;
@@ -60,7 +60,7 @@ public class HomePageActivity extends AppCompatActivity {
 
         popularStylist();
 
-        //popularSalon();
+        popularSalon();
 
         popularReview();
 
@@ -128,31 +128,31 @@ public class HomePageActivity extends AppCompatActivity {
         });
     }
 
-//    private void popularSalon() {
-//        databaseReference = FirebaseDatabase.getInstance().getReference().child("Salon");
-//        salonList = new ArrayList<>();
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-//        salonRecyclerView = findViewById(R.id.popularSalonRecyclerView);
-//        salonRecyclerView.setLayoutManager(linearLayoutManager);
-//        popularSalonAdapter = new PopularSalonAdapter(this, salonList);
-//        salonRecyclerView.setAdapter(popularSalonAdapter);
-//
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-//                    Salon salon = dataSnapshot.getValue(Salon.class);
-//                    salonList.add(salon);
-//                }
-//                popularSalonAdapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//    }
+    private void popularSalon() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Salon");
+        salonList = new ArrayList<>();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        salonRecyclerView = findViewById(R.id.popularSalonRecyclerView);
+        salonRecyclerView.setLayoutManager(linearLayoutManager);
+        popularSalonAdapter = new PopularSalonAdapter(this, salonList);
+        salonRecyclerView.setAdapter(popularSalonAdapter);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Salon salon = dataSnapshot.getValue(Salon.class);
+                    salonList.add(salon);
+                }
+                popularSalonAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     private void popularStylist() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Stylist");

@@ -59,7 +59,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
         });
 
         holder.name.setText(stylist.getfName());
-        holder.rating.setRating(Float.parseFloat(String.valueOf(stylist.getAvgRating())));
+        holder.rating.setRating((float)stylist.getAvgRating());
         holder.call.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -74,7 +74,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
             @Override
             public void onClick(View v) {
                 Salon salon = new Salon(stylist.getSalonName());
-                String loc = loc = salon.getCountry() + salon.getCity() + salon.getAddress();;
+                String loc = salon.getCountry() + salon.getCity() + salon.getAddress();;
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
                 context.startActivity(intent);
             }

@@ -16,15 +16,17 @@
         android:theme="@style/Theme.HowsMyStylist"
         tools:targetApi="31">
         <activity
+            android:name=".FeedbackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChooseStylistActivity"
+            android:exported="false" />
+        <activity
             android:name=".UploadSalonProfileActivity"
             android:exported="false" />
         <activity
             android:name=".UploadStylistProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".PopupStylistActivity"
-            android:exported="false"
-            android:theme="@style/Theme.AppCompat.PopupStylistTheme" />
         <activity
             android:name=".UploadUserProfilePicActivity"
             android:exported="false" />

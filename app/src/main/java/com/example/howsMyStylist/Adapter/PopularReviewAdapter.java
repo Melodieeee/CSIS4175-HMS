@@ -2,6 +2,7 @@ package com.example.howsMyStylist.Adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,9 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
 
         holder.name.setText(review.getUsername());
         holder.reviewString.setText(review.getReview());
+        Float rate = Float.parseFloat(String.valueOf(review.getRating()));
+//        holder.rating.setRating(rate);
+        Log.d("rating", String.valueOf(rate));
 
         StorageReference reviewImageReference = FirebaseStorage.getInstance().getReference("ReviewPhotos").child(review.getImages().get(0));
         reviewImageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -76,7 +80,7 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
             userProfilePic = itemView.findViewById(R.id.userProfilePic);
             name = itemView.findViewById(R.id.userName);
             reviewString = itemView.findViewById(R.id.reviewString);
-//            rating = itemView.findViewById(R.id.popularStylistRatingBar);
+            rating = itemView.findViewById(R.id.popularStylistRatingBar);
 
         }
     }

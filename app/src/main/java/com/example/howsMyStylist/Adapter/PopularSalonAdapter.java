@@ -14,9 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;;
 
+import com.bumptech.glide.Glide;
 import com.example.howsMyStylist.Model.Salon;
 import com.example.howsMyStylist.Model.Stylist;
 import com.example.howsMyStylist.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -41,10 +45,21 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
     @Override
     public void onBindViewHolder(@NonNull PopularSalonViewHolder holder, int position) {
         Salon salon = list.get(position);
-        Uri uri = Uri.parse(salon.getUriImage());
-        Picasso.with(context).load(uri).into(holder.profile);
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("SalonPhotos").child(salon.getUriImage());
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                Glide.with(holder.profile.getContext())
+                        .load(downloadUrl.toString())
+                        .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                        .error(R.drawable.ic_baseline_cloud_download_24)
+                        .into(holder.profile);
+            }
+        });
+
         holder.name.setText(salon.getSalonName());
-//        holder.rating.setRating(Float.parseFloat(String.valueOf(salon.getAvgRating())));
+//        holder.rating.setRating(Float.parseFloat(String.valueOf(stylist.getAvgRating())));
         holder.call.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -58,7 +73,7 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
 
             @Override
             public void onClick(View v) {
-                String loc = salon.getCountry() + salon.getCity() + salon.getAddress();
+                String loc = salon.getCountry() + salon.getCity() + salon.getAddress();;
                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
                 context.startActivity(intent);
             }
@@ -72,7 +87,7 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
 
     public static class PopularSalonViewHolder extends RecyclerView.ViewHolder{
         TextView name;
-        RatingBar rating;
+//        RatingBar rating;
         Button call, map;
         ImageView profile;
 
@@ -80,7 +95,7 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
             super(itemView);
             profile = itemView.findViewById(R.id.popularStylistImage);
             name = itemView.findViewById(R.id.popularStylistName);
-            rating = itemView.findViewById(R.id.popularStylistRatingBar);
+//            rating = itemView.findViewById(R.id.popularStylistRatingBar);
             call = itemView.findViewById(R.id.call_stylist);
             map = itemView.findViewById(R.id.locate_stylist);
         }

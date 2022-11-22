@@ -22,13 +22,15 @@
             android:layout_marginTop="8dp"
             android:src="@drawable/hms_logo" />
 
-        <EditText
+        <SearchView
             android:id="@+id/searchbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:hint="search for stylists, salons..." />
+            android:queryHint="search for stylists, salons..."
+            android:background="@drawable/btn_register"
+            android:iconifiedByDefault="false"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -51,7 +53,7 @@
                     android:layout_marginBottom="8dp"
                     android:text="Popular Stylists"
                     android:textColor="@color/deep_blue"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -69,7 +71,7 @@
                     android:layout_marginBottom="8dp"
                     android:text="Popular Salon"
                     android:textColor="@color/deep_blue"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -87,7 +89,7 @@
                     android:layout_marginBottom="8dp"
                     android:text="Popular Reviews"
                     android:textColor="@color/deep_blue"
-                    android:textSize="20dp"
+                    android:textSize="30dp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView

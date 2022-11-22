@@ -40,6 +40,8 @@
             style="?android:attr/ratingBarStyleIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="0.5"
             android:layout_gravity="center"/>
 
         <LinearLayout
@@ -59,7 +61,7 @@
                 android:paddingStart="5dp"
                 android:text="Call"
                 android:textColor="@color/deep_blue"
-                android:textSize="10dp"
+                android:textSize="15dp"
                 app:icon="@drawable/ic_baseline_phone_24"
                 app:iconGravity="start"
                 app:iconSize="15dp"
@@ -78,7 +80,7 @@
                 android:paddingStart="5dp"
                 android:text="Map"
                 android:textColor="@color/deep_blue"
-                android:textSize="10dp"
+                android:textSize="15dp"
                 app:icon="@drawable/ic_baseline_location_on_24"
                 app:iconGravity="start"
                 app:iconSize="15dp"

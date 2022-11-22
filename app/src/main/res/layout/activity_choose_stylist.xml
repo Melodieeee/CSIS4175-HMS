@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/popup_stylist_bg"
-    tools:context=".PopupStylistActivity">
+    tools:context=".ChooseStylistActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -17,18 +16,16 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
-        <androidx.appcompat.widget.SearchView
+        <SearchView
             android:id="@+id/searchView_stylistAndSalon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="5dp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:forceDarkAllowed="true"
-            android:padding="10dp"
-            android:iconifiedByDefault="false"
             android:queryHint="Search Here"
-            style="@style/SearchBarTheme"/>
+            android:iconifiedByDefault="false"
+            android:background="@drawable/btn_register"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_stylistCard"
@@ -38,21 +35,20 @@
             android:layout_weight="7"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <TextView
-            android:id="@+id/txv_createStylist"
+        <androidx.appcompat.widget.AppCompatButton
+            android:background="@drawable/btn_register"
+            android:id="@+id/btn_createStylist"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginVertical="20dp"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="true"
-            android:text="Click to create your stylist profile"
-            android:textAlignment="textEnd"
+            android:text="create new stylist profile..."
             android:layout_marginHorizontal="10dp"
-            android:textColor="@color/light_blue"
-            android:textSize="15sp"
-            android:textStyle="italic" />
-
-
+            android:textColor="@color/deep_blue"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
