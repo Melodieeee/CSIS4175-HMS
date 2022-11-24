@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:orientation="vertical"
-        android:paddingTop="100dp">
+        android:paddingTop="80dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:hint="username"
+            android:hint="@string/username"
             tools:ignore="TouchTargetSizeCheck" />
 
         <EditText
@@ -54,25 +54,32 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="email"
+            android:hint="@string/email"
             tools:ignore="TouchTargetSizeCheck" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_reg_birthday"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Birthday"
-            android:enabled="false"
-            android:allowClickWhenDisabled="true"
+            android:hint="@string/birthday"
+            android:paddingVertical="8dp"
+            android:paddingStart="5dp"
+            android:textColorHint="#9D9D9D"
+            android:textSize="18sp"
             tools:ignore="TouchTargetSizeCheck" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#8C8C8C" />
 
         <EditText
             android:id="@+id/edit_phone"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="phone number"
+            android:hint="@string/phoneNumber"
             android:inputType="phone"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -81,7 +88,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="password"
+            android:hint="@string/password"
             android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -90,7 +97,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="confirm password"
+            android:hint="@string/confirmPwd"
             android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck" />
 
@@ -99,7 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <LinearLayout

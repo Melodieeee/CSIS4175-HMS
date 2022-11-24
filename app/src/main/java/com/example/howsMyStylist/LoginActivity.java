@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         // Register page
         btn_register = findViewById(R.id.btn_register);
         btn_register.setOnClickListener(v -> {
-            Toast.makeText(LoginActivity.this, "Register page clicked", Toast.LENGTH_LONG).show();
+//            Toast.makeText(LoginActivity.this, "Register page clicked", Toast.LENGTH_LONG).show();
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
 
         });

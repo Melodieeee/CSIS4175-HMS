@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.howsMyStylist.Model.User;
@@ -35,7 +36,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "test";
     private EditText edit_username, edit_firstname, edit_lastname ,edit_email, edit_phone,
-            edit_password, edit_confirm_password, edit_birthday;
+            edit_password, edit_confirm_password;
+    private TextView edit_birthday;
     private Button btn_createAccount, btn_login;
     private CheckBox checkBoxAgree;
     private DatePickerDialog picker;
@@ -78,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // TODO: Back to login
         btn_login.setOnClickListener(v -> {
-            Toast.makeText(RegisterActivity.this, "Join us today", Toast.LENGTH_LONG).show();
+//            Toast.makeText(RegisterActivity.this, "Join us today", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
 

@@ -14,11 +14,12 @@
     <string name="update">Update</string>
     <string name="personal_info">Personal information</string>
     <string name="account_security">Account security</string>
-    <string name="fullName">Full name</string>
+    <string name="username">Username</string>
     <string name="firstName">First name</string>
     <string name="lastName">Last name</string>
-    <string name="phone">Phone number</string>
     <string name="birthday">Birthday (dd/mm/yyyy)</string>
+    <string name="email">Email</string>
+    <string name="phoneNumber">Phone number</string>
     <string name="choose_picture">Choose Picture</string>
     <string name="upload">Upload</string>
     <string name="dialog_createSalon_message">The salon you entered does not exist in How\'s My Stylist now.
@@ -27,4 +28,7 @@
     <string name="dialog_createSalon_title">Go To Create Salon\'s Profile</string>
 
     <string name="ok">Ok</string>
+    <string name="password">Password</string>
+    <string name="confirmPwd">Confirm password</string>
+
 </resources>
