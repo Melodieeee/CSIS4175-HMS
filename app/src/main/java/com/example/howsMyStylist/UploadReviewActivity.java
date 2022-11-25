@@ -26,6 +26,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cottacush.android.currencyedittext.CurrencyEditText;
@@ -54,7 +55,7 @@ import java.util.List;
 public class UploadReviewActivity extends AppCompatActivity {
 
     private CurrencyEditText currencyEditText;
-    private EditText edit_stylistName, edit_salonName, edit_serviceName,
+    private EditText  edit_stylistName, edit_salonName, edit_serviceName,
                         edit_serviceDate, edit_review;
     private RatingBar ratingBar;
     private ViewPager viewPager;

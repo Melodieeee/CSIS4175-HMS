@@ -45,23 +45,41 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
 
         holder.name.setText(review.getUsername());
         holder.reviewString.setText(review.getReview());
-        Float rate = Float.parseFloat(String.valueOf(review.getRating()));
-//        holder.rating.setRating(rate);
-        Log.d("rating", String.valueOf(rate));
 
-        StorageReference reviewImageReference = FirebaseStorage.getInstance().getReference("ReviewPhotos").child(review.getImages().get(0));
-        reviewImageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide.with(holder.reviewImage.getContext())
-                        .load(downloadUrl.toString())
-                        .placeholder(R.drawable.ic_baseline_cloud_download_24)
-                        .error(R.drawable.ic_baseline_cloud_download_24)
-                        .into(holder.reviewImage);
-            }
-        });
+        String reviewPic;
+        try {
+          reviewPic = review.getImages().get(0);
+        } catch (NullPointerException e) {
+            e.getMessage();
+            reviewPic = "";
+        }
 
-//        holder.rating.setRating(Float.parseFloat(String.valueOf(review.getRating())));
+        if (!reviewPic.isEmpty()) {
+            StorageReference reviewImageReference = FirebaseStorage.getInstance().getReference("ReviewPhotos").child(reviewPic);
+            reviewImageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide.with(holder.reviewImage.getContext())
+                            .load(downloadUrl.toString())
+                            .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                            .error(R.drawable.ic_baseline_cloud_download_24)
+                            .into(holder.reviewImage);
+                }
+            });
+        } else {
+            holder.reviewImage.setImageResource(R.drawable.hms_logo2);
+        }
+
+        Double ratingF = new Double(review.getRating());
+        holder.rating.setRating(ratingF.floatValue());
+
+        String userPic = review.getUserProfilePic();
+        if (userPic.equals("null")) {
+            holder.userProfilePic.setImageResource(R.drawable.hms_logo2);
+        } else {
+            Glide.with(holder.userProfilePic.getContext()).load(review.getUserProfilePic()).into(holder.userProfilePic);
+        }
+
     }
 
     @Override
@@ -80,8 +98,7 @@ public class PopularReviewAdapter extends RecyclerView.Adapter<PopularReviewAdap
             userProfilePic = itemView.findViewById(R.id.userProfilePic);
             name = itemView.findViewById(R.id.userName);
             reviewString = itemView.findViewById(R.id.reviewString);
-            rating = itemView.findViewById(R.id.popularStylistRatingBar);
-
+            rating = itemView.findViewById(R.id.reviewRatingBar);
         }
     }
 }

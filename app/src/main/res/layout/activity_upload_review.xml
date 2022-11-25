@@ -51,9 +51,9 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:text=""
+                        android:focusable="false"
+                        android:clickable="false"
 
-                        android:allowClickWhenDisabled="true"
-                        android:enabled="false"
                         android:textColor="@color/black"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -76,8 +76,8 @@
                         android:maxLines="1"
                         android:text=""
 
-                        android:allowClickWhenDisabled="true"
-                        android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
                         android:textColor="@color/black"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -159,8 +159,8 @@
                         android:id="@+id/input_serviceDate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:allowClickWhenDisabled="true"
-                        android:enabled="false"
+                        android:focusable="false"
+                        android:clickable="false"
                         android:textColor="@color/black" />
 
                 </com.google.android.material.textfield.TextInputLayout>

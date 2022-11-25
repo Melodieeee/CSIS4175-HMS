@@ -46,17 +46,23 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
     public void onBindViewHolder(@NonNull PopularStylistViewHolder holder, int position) {
         Stylist stylist = list.get(position);
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("StylistPhotos").child(stylist.geturiStylistPic());
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide.with(holder.profile.getContext())
-                        .load(downloadUrl.toString())
-                        .placeholder(R.drawable.ic_baseline_cloud_download_24)
-                        .error(R.drawable.ic_baseline_cloud_download_24)
-                        .into(holder.profile);
-            }
-        });
+        String stylistPic = stylist.geturiStylistPic();
+        if (!stylistPic.isEmpty()) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("StylistPhotos").child(stylistPic);
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide.with(holder.profile.getContext())
+                            .load(downloadUrl.toString())
+                            .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                            .error(R.drawable.ic_baseline_cloud_download_24)
+                            .into(holder.profile);
+                }
+            });
+        } else {
+            holder.profile.setImageResource(R.drawable.hms_logo2);
+        }
+
 
         holder.name.setText(stylist.getfName());
         holder.rating.setRating((float)stylist.getAvgRating());
