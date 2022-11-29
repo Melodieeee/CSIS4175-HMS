@@ -101,7 +101,6 @@
             android:inputType="textPassword"
             tools:ignore="TouchTargetSizeCheck" />
 
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,6 +129,15 @@
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="10sp" />
+
+                <!-- Creating a progress bar-->
+                <ProgressBar
+                    android:id="@+id/progress_circular_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

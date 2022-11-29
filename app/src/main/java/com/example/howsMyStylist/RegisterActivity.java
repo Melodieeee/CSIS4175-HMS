@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btn_createAccount, btn_login;
     private CheckBox checkBoxAgree;
     private DatePickerDialog picker;
+    // Progress bar
+    private ProgressBar loadingPB;
+    boolean isProgressVisible = false;
 
     private DatabaseReference mFirebaseDatabase; //we need a reference to make connection
     private FirebaseDatabase mFirebaseInstance;
@@ -49,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
         // xml references
         edit_username = findViewById(R.id.edit_username);
         edit_firstname = findViewById(R.id.edit_firstname);
@@ -83,6 +89,8 @@ public class RegisterActivity extends AppCompatActivity {
 //            Toast.makeText(RegisterActivity.this, "Join us today", Toast.LENGTH_LONG).show();
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
+        // TODO: Create progress bar
+        loadingPB = findViewById(R.id.progress_circular_loading);
 
         // TODO: Create Account
         btn_createAccount.setOnClickListener(v -> {
@@ -149,11 +157,20 @@ public class RegisterActivity extends AppCompatActivity {
                         "Please confirm term and policy.", Toast.LENGTH_SHORT).show();
 
             } else {
-                Toast.makeText(RegisterActivity.this,
-                        "Request send.", Toast.LENGTH_SHORT).show();
                 registerUser(username, email, phone, pwd, confirm_pwd, birthday, firstname, lastname);
+
+                if (isProgressVisible){
+                    loadingPB.setVisibility(View.GONE);
+                    isProgressVisible = false;
+                } else {
+                    isProgressVisible = true;
+                    loadingPB.setVisibility(View.VISIBLE);
+                }
             }
         });
+
+
+
     }
 
     private void registerUser(String username, String email, String phone, String pwd, String confirm_pwd, String birthday, String firstname, String lastname) {

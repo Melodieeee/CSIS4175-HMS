@@ -3,6 +3,7 @@ package com.example.howsMyStylist.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;;
@@ -71,7 +73,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
             @Override
             public void onClick(View v) {
                 String num = stylist.getPhone();
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(num));
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + num));
                 context.startActivity(intent);
             }
         });
@@ -97,6 +99,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
         RatingBar rating;
         Button call, map;
         ImageView profile;
+        Button favImgView;
 
         public PopularStylistViewHolder(@NonNull View itemView) {
             super(itemView);
