@@ -219,7 +219,16 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        }).setNegativeButton("Already verified? Log in again", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                auth.signOut();
+                Toast.makeText(UploadUserProfileActivity.this,"Logged Out", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(UploadUserProfileActivity.this, LoginActivity.class));
+                finish();
+            }
         });
+
         //Create AlertDialog
         AlertDialog alertDialog = builder.create();
         //Show AlertDialog
