@@ -208,25 +208,19 @@ public class UploadUserProfileActivity extends AppCompatActivity {
         //Set up alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(UploadUserProfileActivity.this, R.style.AlertDialogTheme);
         builder.setTitle("You account is not verified!");
-        builder.setMessage("Please verify your email now. Or You may not login without email verification next time.");
+        builder.setMessage("Please verify your email now. Or You may not login without email verification next time. If you have already verified your email, please login again.");
         //Open email app if "continue" clicked
-        builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //open in a new window
-                startActivity(intent);
-                finish();
-            }
-        }).setNegativeButton("Already verified? Log in again", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                auth.signOut();
-                Toast.makeText(UploadUserProfileActivity.this,"Logged Out", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(UploadUserProfileActivity.this, LoginActivity.class));
-                finish();
-            }
+        builder.setPositiveButton("Continue", (dialog, which) -> {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); //open in a new window
+            startActivity(intent);
+            finish();
+        }).setNeutralButton("Log out", (dialog, which) -> {
+            auth.signOut();
+            Toast.makeText(UploadUserProfileActivity.this,"Logged out successfully, please login again", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(UploadUserProfileActivity.this, LoginActivity.class));
+            finish();
         });
 
         //Create AlertDialog
@@ -249,6 +243,9 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     // Set data for each fields
                     _USERNAME = firebaseUser.getDisplayName();
                     _REVIEW = String.valueOf(snapshot.child("reviewIdList").getChildrenCount());
+                    long salonFavNum = snapshot.child("favSalonList").getChildrenCount();
+                    long stylistFavNum = snapshot.child("favStylistList").getChildrenCount();
+                    _FAVORITE = String.valueOf(salonFavNum+stylistFavNum);
                     reviewSnapshot = snapshot.child("reviewIdList");
                     _EMAIL = firebaseUser.getEmail();
                     _PHONE = user.getPhone();
@@ -266,6 +263,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
 
                     usernameLabel.setText(_USERNAME);
                     reviewLabel.setText(_REVIEW);
+                    favoriteLabel.setText(_FAVORITE);
                     edit_email.getEditText().setText(_EMAIL);
                     edit_phone.getEditText().setText(_PHONE);
 //                    edit_password.getEditText().setText(_PWD);

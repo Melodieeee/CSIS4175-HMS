@@ -45,8 +45,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 edit_email.setError("Valid email is required.");
                 edit_email.requestFocus();
             } else {
-                Toast.makeText(ForgotPasswordActivity.this,
-                        "Clicked reset button", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ForgotPasswordActivity.this,
+//                        "Clicked reset button", Toast.LENGTH_SHORT).show();
                 ResetPassword(email);
 
             }
