@@ -251,6 +251,45 @@
                         android:text="" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+                <!-- PASSWORD -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Password"
+                    android:textColorHint="@color/light_grey"
+                    app:passwordToggleEnabled="true"
+                    app:boxBackgroundColor="@null"
+                    app:hintTextColor="@color/deep_blue">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <!-- CONFIRM_PASSWORD -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_confirm_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Confirm Password"
+                    android:textColorHint="@color/light_grey"
+                    app:boxBackgroundColor="@null"
+                    app:hintTextColor="@color/deep_blue"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <!-- ADDRESS -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_address"
