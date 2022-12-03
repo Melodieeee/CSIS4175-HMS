@@ -140,7 +140,7 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
                 uploadPic(uriImage);
                 Toast.makeText(UploadSalonProfileActivity.this,
                         "Request send.", Toast.LENGTH_SHORT).show();
-                createSalonProfile(_NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _STATE, _COUNTRY, _PHOTO);
+                createSalonProfile(_NAME, _PHONE, _WEB, _ADDRESS, _CITY, _ZIP, _STATE, _COUNTRY, _PHOTO, 0);
                 finish();
             }
 
@@ -198,7 +198,7 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
             });
         }else {
             _PHOTO = "";
-            Toast.makeText(UploadSalonProfileActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(UploadSalonProfileActivity.this, "No Picture was selected!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -209,9 +209,8 @@ public class UploadSalonProfileActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void createSalonProfile(String name, String phone, String web, String address, String city, String zip, String state, String country, String salonPhoto) {
-        // String uriImageString = String.valueOf(uriImage);
-        Salon newSalon = new Salon(name, phone, address, country, state, city, zip, web, salonPhoto);
+    private void createSalonProfile(String name, String phone, String web, String address, String city, String zip, String state, String country, String salonPhoto, double avgRating) {
+        Salon newSalon = new Salon(name, phone, address, country, state, city, zip, web, salonPhoto, avgRating);
         firebaseDatabase.child(salonId).setValue(newSalon);
     }
 

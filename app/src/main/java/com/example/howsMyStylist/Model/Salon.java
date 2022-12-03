@@ -10,12 +10,13 @@ public class Salon {
     private String zip;
     private String webLink;
     private String uriImage;
+    private double avgRating;
 
     public Salon() {
 
     }
 
-    public Salon(String salonName, String phone, String address, String country, String state, String city, String zip, String webLink, String uriImage) {
+    public Salon(String salonName, String phone, String address, String country, String state, String city, String zip, String webLink, String uriImage, double avgRating) {
         this.salonName = salonName;
         this.phone = phone;
         this.address = address;
@@ -25,11 +26,14 @@ public class Salon {
         this.zip = zip;
         this.webLink = webLink;
         this.uriImage = uriImage;
+        this.avgRating = avgRating;
     }
 
     public Salon(String name){
         this.salonName = name;
     }
+
+
 
     public String getSalonName() {
         return salonName;
@@ -99,4 +103,11 @@ public class Salon {
         return uriImage;
     }
 
+    public double getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(double avgRating) {
+        this.avgRating = avgRating;
+    }
 }

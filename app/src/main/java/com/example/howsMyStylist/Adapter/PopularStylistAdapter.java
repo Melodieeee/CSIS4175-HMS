@@ -90,7 +90,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
             holder.profile.setImageResource(R.drawable.hms_logo2);
         }
 
-        holder.name.setText(stylist.getfName());
+        holder.name.setText(stylist.getfName() + " " + stylist.getlName());
         holder.rating.setRating((float)stylist.getAvgRating());
         holder.call.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -105,7 +105,7 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
             public void onClick(View v) {
                 Salon salon = new Salon(stylist.getSalonName());
                 String loc = salon.getCountry() + salon.getCity() + salon.getAddress();
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
                 context.startActivity(intent);
             }
         });
@@ -117,9 +117,9 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
                 if (sKeyList.get(position).equals(id)) {
                     holder.fav.setChecked(true);
                     holder.fav.setAlpha(1f);
-                    Log.d("PPP1", String.valueOf(holder.fav.isChecked()));
+                    Log.d("FavLoad", String.valueOf(holder.fav.isChecked()));
                 }
-                Log.d("PPP2", id);
+                Log.d("FavLoad", id);
             }
         }
 
@@ -129,12 +129,12 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
                     // The toggle is enabled
                     holder.fav.setAlpha(1f);
                     favoriteStatus = true;
-                    Log.d("PPP3", "checked");
+                    Log.d("FavCheck", "checked");
                 } else {
                     // The toggle is disabled
                     holder.fav.setAlpha(0.2f);
                     favoriteStatus = false;
-                    Log.d("PPP3", "unchecked");
+                    Log.d("FavCheck", "unchecked");
                 }
                 String id = sKeyList.get(holder.getAdapterPosition());
                 listener.onFavoriteStylistChosen(id, favoriteStatus);
@@ -167,6 +167,6 @@ public class PopularStylistAdapter extends RecyclerView.Adapter<PopularStylistAd
     }
 
     public interface onButtonClick {
-        void onFavoriteStylistChosen(String id, boolean favoriteStatus);
+        void onFavoriteStylistChosen(String favoriteId, boolean favoriteStatus);
     }
 }

@@ -67,22 +67,29 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
         List<String> sKeyList = salonMap.keySet().stream().collect(Collectors.toList());
         Salon salon = salonMap.get(sKeyList.get(position));
 
-//        Salon salon = list.get(position);
+        String salonPic = salon.getUriImage();
+        if (!salonPic.isEmpty()) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference("SalonPhotos").child(salon.getUriImage());
+            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide.with(holder.profile.getContext())
+                            .load(downloadUrl.toString())
+                            .placeholder(R.drawable.ic_baseline_cloud_download_24)
+                            .error(R.drawable.ic_baseline_cloud_download_24)
+                            .into(holder.profile);
+                }
+            });
+        } else {
+            holder.profile.setImageResource(R.drawable.hms_logo2);
+        }
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("SalonPhotos").child(salon.getUriImage());
-        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide.with(holder.profile.getContext())
-                        .load(downloadUrl.toString())
-                        .placeholder(R.drawable.ic_baseline_cloud_download_24)
-                        .error(R.drawable.ic_baseline_cloud_download_24)
-                        .into(holder.profile);
-            }
-        });
-
+        Log.d("salonRating", String.valueOf(salon.getSalonName()));
         holder.name.setText(salon.getSalonName());
-//        holder.rating.setRating(Float.parseFloat(String.valueOf(stylist.getAvgRating())));
+
+        Log.d("salonRating", String.valueOf(salon.getAvgRating()));
+        holder.rating.setRating((float)salon.getAvgRating());
+
         holder.call.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -92,12 +99,13 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
                 context.startActivity(intent);
             }
         });
+
         holder.map.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 String loc = salon.getCountry() + salon.getCity() + salon.getAddress();;
-                Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("google.navigation:q=" + loc));
                 context.startActivity(intent);
             }
         });
@@ -108,9 +116,9 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
                 if (sKeyList.get(position).equals(id)){
                     holder.fav.setChecked(true);
                     holder.fav.setAlpha(1f);
-                    Log.d("PPP1", String.valueOf(holder.fav.isChecked()));
+                    Log.d("FavLoad", String.valueOf(holder.fav.isChecked()));
                 }
-                Log.d("PPP2", id);
+                Log.d("FavLoad", id);
             }
         }
 
@@ -121,19 +129,17 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
                     // The toggle is enabled
                     holder.fav.setAlpha(1f);
                     favoriteStatus = true;
-                    Log.d("PPP3", "checked");
+                    Log.d("FavCheck", "checked");
                 } else {
                     // The toggle is disabled
                     holder.fav.setAlpha(0.2f);
                     favoriteStatus = false;
-                    Log.d("PPP3", "unchecked");
+                    Log.d("FavCheck", "unchecked");
                 }
                 String id = sKeyList.get(holder.getAdapterPosition());
                 listener.onFavoriteSalonChosen(id, favoriteStatus);
             }
         });
-
-
     }
 
     @Override
@@ -143,7 +149,7 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
 
     public static class PopularSalonViewHolder extends RecyclerView.ViewHolder{
         TextView name;
-//        RatingBar rating;
+        RatingBar rating;
         Button call, map;
         ImageView profile;
         ToggleButton fav;
@@ -152,7 +158,7 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
             super(itemView);
             profile = itemView.findViewById(R.id.popularStylistImage);
             name = itemView.findViewById(R.id.popularStylistName);
-//            rating = itemView.findViewById(R.id.popularStylistRatingBar);
+            rating = itemView.findViewById(R.id.popularStylistRatingBar);
             call = itemView.findViewById(R.id.call_stylist);
             map = itemView.findViewById(R.id.locate_stylist);
             fav = itemView.findViewById(R.id.favButton);
@@ -160,6 +166,6 @@ public class PopularSalonAdapter extends RecyclerView.Adapter<PopularSalonAdapte
     }
 
     public interface onButtonClick {
-        void onFavoriteSalonChosen(String id, boolean favoriteStatus);
+        void onFavoriteSalonChosen(String favoriteId, boolean favoriteStatus);
     }
 }

@@ -36,12 +36,11 @@ public class User {
         this.lname = lastname;
     }
 
-    public User(String firstname, String lastname, String dob, String phone, String pwd, String profilePic, String address, String city, String state, String zip, String country) {
+    public User(String firstname, String lastname, String dob, String phone, String profilePic, String address, String city, String state, String zip, String country) {
         this.fname = firstname;
         this.lname = lastname;
         this.birth = dob;
         this.phone = phone;
-        this.password = pwd;
         this.address = address;
         this.city = city;
         this.state = state;

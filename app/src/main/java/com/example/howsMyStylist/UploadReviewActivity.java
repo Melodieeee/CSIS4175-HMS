@@ -32,6 +32,8 @@ import android.widget.Toast;
 import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.example.howsMyStylist.Adapter.ImagesAdapter;
 import com.example.howsMyStylist.Model.Review;
+import com.example.howsMyStylist.Model.Salon;
+import com.example.howsMyStylist.Model.Stylist;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,8 +42,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,7 +60,7 @@ import java.util.List;
 public class UploadReviewActivity extends AppCompatActivity {
 
     private CurrencyEditText currencyEditText;
-    private EditText  edit_stylistName, edit_salonName, edit_serviceName,
+    private EditText edit_stylistName, edit_salonName, edit_serviceName,
                         edit_serviceDate, edit_review;
     private RatingBar ratingBar;
     private ViewPager viewPager;
@@ -78,6 +83,8 @@ public class UploadReviewActivity extends AppCompatActivity {
     private String reviewId;
     private String _PHOTO;
     private List<String> photosList;
+    private int reviewWithStylistCount;
+    private int reviewWithSalonCount;
 
 
     @Override
@@ -305,9 +312,93 @@ public class UploadReviewActivity extends AppCompatActivity {
                             i++;
                         }
                     }
-                    // update the review to user's reviewList
+                    // update User's reviewList
                     firebaseDatabase = firebaseInstance.getReference("User");
-                    firebaseDatabase.child(firebaseUser.getUid()).child("reviewIdList").child(reviewId).setValue("stylist id?");
+                    firebaseDatabase.child(firebaseUser.getUid()).child("reviewIdList").child(reviewId).setValue(stylistName+ ", " + salonName);
+
+                    // update Stylist's avgRating
+                    DatabaseReference reviewReference = FirebaseDatabase.getInstance().getReference("Review");
+                    DatabaseReference stylistReference = FirebaseDatabase.getInstance().getReference("Stylist");
+                    DatabaseReference salonReference = FirebaseDatabase.getInstance().getReference("Salon");
+                    // 1. Count the num of stylist name in all reviews
+                    reviewReference
+                        .orderByChild("stylistName").equalTo(stylistName).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                reviewWithStylistCount = (int) snapshot.getChildrenCount();
+                                //debug
+                                System.out.println("reviewStylistCount: " + reviewWithStylistCount);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    // 2. use the name in the review to find the same name in stylist db and update avgRating
+                    stylistReference
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            snapshot.getChildren().forEach(
+                                    s -> {
+                                        Stylist stylist = s.getValue(Stylist.class);
+                                        String sName = stylist.getfName() + " " + stylist.getlName();
+                                        if (stylistName.equals(sName)) {
+                                            // debug
+                                            System.out.println("Stylist: " + sName);
+                                            System.out.println("rating set to: " + (stylist.getAvgRating() * (reviewWithStylistCount - 1) + rating) / (reviewWithStylistCount));
+                                            stylist.setAvgRating( (stylist.getAvgRating() * (reviewWithStylistCount - 1) + rating) / (reviewWithStylistCount) );
+                                            stylistReference.child(s.getKey()).setValue(stylist);
+                                            System.out.println("rating: " + stylist.getAvgRating());
+                                            Toast.makeText(UploadReviewActivity.this, "Stylist's rating updated", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                            );
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+
+                    // update Salon's rating
+                    // 1. Count the num of salon name in all reviews
+                    reviewReference
+                            .orderByChild("salonName").equalTo(salonName).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            reviewWithSalonCount = (int) snapshot.getChildrenCount();
+                            //debug
+                            System.out.println("reviewSalonCount: " + reviewWithSalonCount);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
+                    // 2. use the name in the review to find the same name in stylist db and update avgRating
+                    salonReference
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            snapshot.getChildren().forEach(
+                                    s -> {
+                                        Salon salon = s.getValue(Salon.class);
+                                        String sName = salon.getSalonName();
+                                        if (salonName.equals(sName)) {
+                                            System.out.println("Salon: " + sName);
+                                            System.out.println("rating set to: " + (salon.getAvgRating() * (reviewWithSalonCount - 1) + rating) / (reviewWithSalonCount));
+                                            salon.setAvgRating( (salon.getAvgRating() * (reviewWithSalonCount - 1) + rating) / reviewWithSalonCount);
+                                            salonReference.child(s.getKey()).setValue(salon);
+                                            System.out.println("rating: " + salon.getAvgRating());
+                                            Toast.makeText(UploadReviewActivity.this, "Salon's rating updated", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                            );
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+                    });
 
                     Toast.makeText(UploadReviewActivity.this, "Review posted successfully!", Toast.LENGTH_SHORT).show();
 

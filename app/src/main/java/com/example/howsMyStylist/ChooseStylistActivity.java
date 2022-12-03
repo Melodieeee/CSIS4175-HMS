@@ -44,9 +44,6 @@ public class ChooseStylistActivity extends AppCompatActivity implements PopupSty
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        // Remember that you should never show the action bar if the status bar is hidden, so hide that too if necessary.
-        //        ActionBar actionBar = getActionBar();
-        //        actionBar.hide();
 
         // recyclerview
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Stylist");
@@ -74,8 +71,6 @@ public class ChooseStylistActivity extends AppCompatActivity implements PopupSty
                     if(snapshot.exists()) {
                         stylistList = new ArrayList<>();
                         for(DataSnapshot ds: snapshot.getChildren()) {
-//                             Stylist catchStylist = ds.getValue(Stylist.class);
-//                             stylistList.add(catchStylist);
                             stylistList.add(ds.getValue(Stylist.class));
                         }
                         PopupStylistAdapter adapter = new PopupStylistAdapter(stylistList);

@@ -93,32 +93,27 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
 
         // TODO: Edit Salon Name
         //edit_salon clicked - list existed salon name
-        edit_salon.setOnClickListener( v -> {
-            //set salon name from firebase
-            DatabaseReference salonDatabase = FirebaseDatabase.getInstance().getReference("Salon");
-
-                salonDatabase.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()) {
-                            salonNameList = new ArrayList<>();
-                            Log.d("DBsnapshot", String.valueOf(snapshot.getChildrenCount()));
-                            for(DataSnapshot ds: snapshot.getChildren()) {
-                                salonNameList.add(ds.getValue(Salon.class).getSalonName());
-                            }
-                            Log.d("DBsnapshot", String.valueOf(salonNameList.size()));
-                        }
+        //set salon name from firebase
+        DatabaseReference salonDatabase = FirebaseDatabase.getInstance().getReference("Salon");
+        salonDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    salonNameList = new ArrayList<>();
+                    Log.d("DBsnapshot", String.valueOf(snapshot.getChildrenCount()));
+                    for(DataSnapshot ds: snapshot.getChildren()) {
+                        salonNameList.add(ds.getValue(Salon.class).getSalonName());
                     }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(UploadStylistProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            if (salonNameList != null) {
-                ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
-                        UploadStylistProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, salonNameList);
-                edit_salon.setAdapter(stateAdapter);
+                    Log.d("DBsnapshot", String.valueOf(salonNameList.size()));
+                    System.out.println(salonNameList);
+                    ArrayAdapter<String> stateAdapter = new ArrayAdapter<>(
+                            UploadStylistProfileActivity.this, android.R.layout.simple_spinner_dropdown_item, salonNameList);
+                    edit_salon.setAdapter(stateAdapter);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UploadStylistProfileActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,7 +124,7 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: TO CANCEL THE ACTIVITY AND BACK TO LAST STEP(POPUPSTYLISTACTIVITY)
+        // TODO: TO CANCEL THE ACTIVITY AND BACK TO LAST STEP(CHOOSESTYLISTACTIVITY)
         btn_cancelCreation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,7 +217,6 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
     }
 
     private void createStylistProfile(String firstname, String lastname, String phone, String email, String gender, String salonName, String stylistPhoto, double avgRating) {
-//        stylistId = stylistDatabase.push().getKey();
         Stylist newStylist = new Stylist(firstname, lastname, phone, email, gender, salonName, stylistPhoto, avgRating);
         stylistDatabase.child(stylistId).setValue(newStylist);
     }

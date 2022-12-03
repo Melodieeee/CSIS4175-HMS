@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.howsMyStylist.Adapter.PopularReviewAdapter;
@@ -32,20 +33,21 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 public class HomePageActivity extends AppCompatActivity implements PopularStylistAdapter.onButtonClick, PopularSalonAdapter.onButtonClick {
 
     private static final String TAG = "test";
 
     DatabaseReference databaseReference;
+    SearchView searchView;
 
     Map<String, Stylist> stylistMap;
     ArrayList<String> userFavStylistList;
     RecyclerView stylistRecyclerView;
     PopularStylistAdapter popularStylistAdapter;
 
-    Map<String, Salon> salonListMap;
+    Map<String, Salon> salonMap;
     ArrayList<String> userFavSalonList;
     RecyclerView salonRecyclerView;
     PopularSalonAdapter popularSalonAdapter;
@@ -62,6 +64,7 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
         fetchUserFavStylist();
         popularStylist();
 
+        fetchUserFavSalon();
         popularSalon();
 
         popularReview();
@@ -96,30 +99,44 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
                 startActivity(new Intent(HomePageActivity.this, UploadReviewActivity.class));
             }
         });
+
+        searchView = findViewById(R.id.searchbox);
+        if (searchView != null) {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    search(newText);
+                    return true;
+                }
+            });
+        }
     }
 
-    //search stylist and salon
-//    private void search(String str) {
-//        Map<String,Stylist> mStylistMap = new HashMap<>();
-//        for (Stylist stylist: stylistMap.values()) {
-//            if (stylist.getfName().toLowerCase().contains(str.toLowerCase()) ||
-//                    stylist.getlName().toLowerCase().contains(str.toLowerCase()) ||
-//                    stylist.getSalonName().toLowerCase().contains(str.toLowerCase())) {
-//
-//                Stream<String> keyStream = keys(stylistMap, stylist);
-//                mStylistMap = keyStream.collect(Collectors.toMap(, ));
-//            }
-//        }
-//        PopularStylistAdapter adapter = new PopularStylistAdapter(mStylistList);
-//        stylistCardRecyclerView.setAdapter(adapter);
-//    }
-
-    public <K, V> Stream<K> keys(Map<K, V> map, V value) {
-        return map
-                .entrySet()
+    //search for stylist and salon
+    private void search(String str) {
+        // search for stylist
+        Map<String,Stylist> mStylistMap = stylistMap.entrySet()
                 .stream()
-                .filter(entry -> value.equals(entry.getValue()))
-                .map(Map.Entry::getKey);
+                .filter(map -> map.getValue().getfName().toLowerCase().contains(str.toLowerCase()) ||
+                        map.getValue().getlName().toLowerCase().contains(str.toLowerCase()) ||
+                        map.getValue().getSalonName().toLowerCase().contains(str.toLowerCase())
+                ).collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        PopularStylistAdapter stylistAdapter = new PopularStylistAdapter(this, mStylistMap);
+        stylistRecyclerView.setAdapter(stylistAdapter);
+
+        // search for salon
+        Map<String,Salon> mSalonMap = salonMap.entrySet()
+                .stream()
+                .filter(map -> map.getValue().getSalonName().toLowerCase().contains(str.toLowerCase())
+                ).collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        PopularSalonAdapter salonAdapter = new PopularSalonAdapter(this, mSalonMap);
+        salonRecyclerView.setAdapter(salonAdapter);
+
     }
 
     private void popularReview() {
@@ -156,13 +173,13 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
 
     private void popularSalon() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Salon");
-        salonListMap = new HashMap<>();
+        salonMap = new HashMap<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         salonRecyclerView = findViewById(R.id.popularSalonRecyclerView);
         salonRecyclerView.setLayoutManager(linearLayoutManager);
-        popularSalonAdapter = new PopularSalonAdapter(this, salonListMap, userFavSalonList);
+        popularSalonAdapter = new PopularSalonAdapter(this, salonMap, userFavSalonList);
         salonRecyclerView.setAdapter(popularSalonAdapter);
-
+        // for favorite changed
         popularSalonAdapter.setListener(HomePageActivity.this);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -170,40 +187,33 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Salon salon = dataSnapshot.getValue(Salon.class);
-                    salonListMap.put(dataSnapshot.getKey(), salon);
+                    salonMap.put(dataSnapshot.getKey(), salon);
                 }
                 popularSalonAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     private void popularStylist() {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Stylist");
-        //stylistList = new ArrayList<>();
         stylistMap = new HashMap<>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         stylistRecyclerView = findViewById(R.id.popularStylistRecyclerView);
         stylistRecyclerView.setLayoutManager(linearLayoutManager);
         popularStylistAdapter = new PopularStylistAdapter(this, stylistMap, userFavStylistList);
-        //popularStylistAdapter.setUlist(userFavStylistList);
-
         stylistRecyclerView.setAdapter(popularStylistAdapter);
-        // favorite
+        // for favorite changed
         popularStylistAdapter.setListener(HomePageActivity.this);
-        //stylistIdList = new ArrayList<>();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot: snapshot.getChildren()){
                     Stylist stylist = dataSnapshot.getValue(Stylist.class);
-                    //stylistList.add(stylist);
-                    //stylistIdList.add(dataSnapshot.getKey());
                     stylistMap.put(dataSnapshot.getKey(), stylist);
                 }
                 popularStylistAdapter.notifyDataSetChanged();
@@ -211,10 +221,8 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-
     }
 
     //userFavStylist
@@ -233,19 +241,35 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+    }
 
+    //userFavSalon
+    public void fetchUserFavSalon() {
+        userFavSalonList = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference().child("User")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("favSalonList").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot eachChild : snapshot.getChildren()) {
+                            userFavSalonList.add(eachChild.getKey());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
                     }
                 });
     }
 
     @Override
-    public void onFavoriteStylistChosen(String id, boolean favoriteStatus) {
+    public void onFavoriteStylistChosen(String favoriteId, boolean favoriteStatus) {
         //debug
-        Toast.makeText(HomePageActivity.this, id + "  " + String.valueOf(favoriteStatus), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, (favoriteStatus? "Add to ": "Remove from ") + "your favorite list", Toast.LENGTH_SHORT).show();
+        Log.d("StylistIdLiked", favoriteId + "  " + String.valueOf(favoriteStatus));
         //update to database
-        //String favoriteId = stylistIdList.get(position);
-        String favoriteId = id;
-
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         String userId = firebaseUser.getUid();
@@ -258,14 +282,14 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
             //remove id from user's favStylistList
             databaseReference.child(favoriteId).removeValue();
         }
-
     }
 
     @Override
-    public void onFavoriteSalonChosen(String id, boolean favoriteStatus) {
+    public void onFavoriteSalonChosen(String favoriteId, boolean favoriteStatus) {
         //debug
-        Toast.makeText(HomePageActivity.this, id + "  " + String.valueOf(favoriteStatus), Toast.LENGTH_SHORT).show();
-        String favoriteId = id;
+        Toast.makeText(this, (favoriteStatus? "Add to ": "Remove from ") + "your favorite list", Toast.LENGTH_SHORT).show();
+        Log.d("SalonIdLiked", favoriteId + "  " + String.valueOf(favoriteStatus));
+        //update to database
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = auth.getCurrentUser();
         String userId = firebaseUser.getUid();
@@ -276,6 +300,5 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
         } else {
             databaseReference.child(favoriteId).removeValue();
         }
-
     }
 }
