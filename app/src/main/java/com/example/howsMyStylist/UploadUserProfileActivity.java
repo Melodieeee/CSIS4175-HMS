@@ -93,6 +93,8 @@ public class UploadUserProfileActivity extends AppCompatActivity {
             picker.show();
         });
         edit_phone = findViewById(R.id.input_phone);
+        edit_password = findViewById(R.id.input_password);
+        edit_confirm_password = findViewById(R.id.input_confirm_password);
         edit_address = findViewById(R.id.input_address);
         edit_city = findViewById(R.id.input_city);
         edit_zip = findViewById(R.id.input_zip);
@@ -249,7 +251,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     reviewSnapshot = snapshot.child("reviewIdList");
                     _EMAIL = firebaseUser.getEmail();
                     _PHONE = user.getPhone();
-//                    _PWD = user.pwd;
+                    _PWD = user.getPassword();
 //      See if need to let users change their pwd in this page or set a btn and let them change in forgot password page???
                     _FIRSTNAME = user.getFname();
                     _LASTNAME = user.getLname();
@@ -266,7 +268,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
                     favoriteLabel.setText(_FAVORITE);
                     edit_email.getEditText().setText(_EMAIL);
                     edit_phone.getEditText().setText(_PHONE);
-//                    edit_password.getEditText().setText(_PWD);
+                    edit_password.getEditText().setText(_PWD);
                     edit_firstName.getEditText().setText(_FIRSTNAME);
                     edit_lastName.getEditText().setText(_LASTNAME);
                     edit_birthday.setText(_DOB);
@@ -309,6 +311,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
         _LASTNAME = edit_lastName.getEditText().getText().toString();
         _DOB = edit_birthday.getText().toString();
         _PHONE = edit_phone.getEditText().getText().toString();
+        _PWD = edit_password.getEditText().getText().toString();
         _ADDRESS = edit_address.getEditText().getText().toString();
         _CITY = edit_city.getEditText().getText().toString();
         _ZIP = edit_zip.getEditText().getText().toString();
@@ -317,7 +320,7 @@ public class UploadUserProfileActivity extends AppCompatActivity {
         _PROFILEPIC = String.valueOf(firebaseUser.getPhotoUrl());
 
         User user =
-                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _PROFILEPIC, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
+                new User(_FIRSTNAME, _LASTNAME, _DOB, _PHONE, _PWD,_PROFILEPIC, _ADDRESS, _CITY, _STATE, _ZIP, _COUNTRY);
 
         //Extracting User Reference from Database for "User"
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("User");

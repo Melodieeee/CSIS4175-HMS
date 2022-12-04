@@ -157,7 +157,7 @@ public class RegisterActivity extends AppCompatActivity {
                         "Please confirm term and policy.", Toast.LENGTH_SHORT).show();
 
             } else {
-                registerUser(username, email, phone, pwd, confirm_pwd, birthday, firstname, lastname);
+                registerUser(username, email, phone, pwd, birthday, firstname, lastname);
 
                 if (isProgressVisible){
                     loadingPB.setVisibility(View.GONE);
@@ -173,7 +173,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void registerUser(String username, String email, String phone, String pwd, String confirm_pwd, String birthday, String firstname, String lastname) {
+    private void registerUser(String username, String email, String phone, String pwd, String birthday, String firstname, String lastname) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         // create user profile
