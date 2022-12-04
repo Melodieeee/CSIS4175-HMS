@@ -26,9 +26,11 @@
         Please help us create the salon profile first!
     </string>
     <string name="dialog_createSalon_title">Go To Create Salon\'s Profile</string>
-
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="password">Password</string>
     <string name="confirmPwd">Confirm password</string>
+    <string name="popularStylists">Popular Stylists</string>
+    <string name="popularSalons">Popular Salons</string>
+    <string name="popularReviews">Popular Reviews</string>
 
 </resources>

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.howsMyStylist.Adapter.PopupStylistAdapter;
+import com.example.howsMyStylist.Adapter.ChooseStylistAdapter;
 import com.example.howsMyStylist.Model.Stylist;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseStylistActivity extends AppCompatActivity implements PopupStylistAdapter.onListItemClick {
+public class ChooseStylistActivity extends AppCompatActivity implements ChooseStylistAdapter.onListItemClick {
 
     DatabaseReference databaseReference;
     List<Stylist> stylistList;
@@ -73,7 +73,7 @@ public class ChooseStylistActivity extends AppCompatActivity implements PopupSty
                         for(DataSnapshot ds: snapshot.getChildren()) {
                             stylistList.add(ds.getValue(Stylist.class));
                         }
-                        PopupStylistAdapter adapter = new PopupStylistAdapter(stylistList);
+                        ChooseStylistAdapter adapter = new ChooseStylistAdapter(stylistList);
                         stylistCardRecyclerView.setLayoutManager(new LinearLayoutManager(ChooseStylistActivity.this));
                         stylistCardRecyclerView.setAdapter(adapter);
                         // pass selected data to the activity
@@ -112,7 +112,7 @@ public class ChooseStylistActivity extends AppCompatActivity implements PopupSty
                 mStylistList.add(stylist);
             }
         }
-        PopupStylistAdapter adapter = new PopupStylistAdapter(mStylistList);
+        ChooseStylistAdapter adapter = new ChooseStylistAdapter(mStylistList);
         stylistCardRecyclerView.setAdapter(adapter);
 
     }

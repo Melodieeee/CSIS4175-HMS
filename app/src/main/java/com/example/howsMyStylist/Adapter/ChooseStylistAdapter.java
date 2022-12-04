@@ -13,15 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.howsMyStylist.Model.Stylist;
 import com.example.howsMyStylist.R;
-import com.example.howsMyStylist.UploadStylistProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PopupStylistAdapter extends RecyclerView.Adapter<PopupStylistAdapter.CardViewHolder> {
+public class ChooseStylistAdapter extends RecyclerView.Adapter<ChooseStylistAdapter.CardViewHolder> {
 
     onListItemClick mListener;
     List<Stylist> stylistList;
@@ -30,14 +28,14 @@ public class PopupStylistAdapter extends RecyclerView.Adapter<PopupStylistAdapte
         this.mListener = mListener;
     }
 
-    public PopupStylistAdapter(List<Stylist> stylistList) {
+    public ChooseStylistAdapter(List<Stylist> stylistList) {
         this.stylistList = stylistList;
     }
 
     @NonNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_holder_popup_stylist, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_holder_choose_stylist, parent, false);
         CardViewHolder viewHolder = new CardViewHolder(itemView);
 
             viewHolder.txvStylistName = itemView.findViewById(R.id.txv_stylistName);
