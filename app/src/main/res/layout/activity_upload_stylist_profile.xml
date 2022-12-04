@@ -280,6 +280,36 @@
 
             </LinearLayout>
 
+            <!-- SALON NAME-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- CITY -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_stylistCity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:hint="City *"
+                    android:textColorHint="@color/light_grey"
+                    app:boxBackgroundColor="@null"
+                    app:hintTextColor="@color/deep_blue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
 
 
             <!-- UPDATE BUTTON-->

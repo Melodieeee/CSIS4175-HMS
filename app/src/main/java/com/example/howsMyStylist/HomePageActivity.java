@@ -137,6 +137,14 @@ public class HomePageActivity extends AppCompatActivity implements PopularStylis
         PopularSalonAdapter salonAdapter = new PopularSalonAdapter(this, mSalonMap);
         salonRecyclerView.setAdapter(salonAdapter);
 
+        // search salon by city
+        Map<String, Salon> salonCityMap = salonMap.entrySet()
+                .stream()
+                .filter(map -> map.getValue().getCity().toLowerCase().contains(str.toLowerCase())
+                ).collect(Collectors.toMap(map -> map.getKey(), map -> map.getValue()));
+        PopularSalonAdapter salonCityAdapter = new PopularSalonAdapter(this, salonCityMap);
+        salonRecyclerView.setAdapter(salonCityAdapter);
+
     }
 
     private void popularReview() {

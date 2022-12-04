@@ -10,6 +10,7 @@ public class Stylist {
     private String phone;
     private double avgRating;
     private String email;
+    private String location;
 
     public Stylist(String fName, String lName, String gender, String salonName) {
         this.fName = fName;
@@ -22,16 +23,18 @@ public class Stylist {
 
     }
 
-    public Stylist(String firstname, String lastname, String phone, String email, String gender, String salonName, String uriImage, double avgRating) {
+    public Stylist(String firstname, String lastname, String phone, String email, String gender, String salonName, String city, String uriImage, double avgRating) {
         this.fName = firstname;
         this.lName = lastname;
         this.phone = phone;
         this.email = email;
         this.gender = gender;
         this.salonName = salonName;
+        this.location = city;
         this.uriStylistPic = uriImage;
         this.avgRating = avgRating;
     }
+
 
 
     public String getfName() {
@@ -96,5 +99,13 @@ public class Stylist {
 
     public void setSalonName(String salonName) {
         this.salonName = salonName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

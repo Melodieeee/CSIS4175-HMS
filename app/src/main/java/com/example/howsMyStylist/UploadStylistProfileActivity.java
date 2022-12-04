@@ -53,11 +53,11 @@ import java.util.List;
 
 public class UploadStylistProfileActivity extends AppCompatActivity {
 
-    private TextInputLayout edit_firstName, edit_lastName, edit_phone, edit_email;
+    private TextInputLayout edit_firstName, edit_lastName, edit_phone, edit_email, edit_city;
     AutoCompleteTextView edit_salon;
     private Button btn_createProfile, btn_cancelCreation, btn_choosePic;
 
-    private String _FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _PHOTO;
+    private String _FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _CITY, _PHOTO;
     private String stylistId;
 
     private DatabaseReference stylistDatabase;
@@ -86,6 +86,7 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
         edit_phone = findViewById(R.id.input_stylistPhone);
         edit_email = findViewById(R.id.input_stylistEmail);
         edit_salon = findViewById(R.id.input_stylistSalonName);
+        edit_city = findViewById(R.id.input_stylistCity);
         btn_createProfile = findViewById(R.id.btn_createStylistProfile);
         btn_cancelCreation = findViewById(R.id.btn_stylistCreationCancel);
         btn_choosePic = findViewById(R.id.btn_stylistChoosePic);
@@ -145,7 +146,9 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                 _LASTNAME = edit_lastName.getEditText().getText().toString();
                 _EMAIL = edit_phone.getEditText().getText().toString();
                 _PHONE = edit_email.getEditText().getText().toString();
+                _CITY = edit_city.getEditText().getText().toString();
                 _SALON = edit_salon.getText().toString();
+
 
                 if (TextUtils.isEmpty(_FIRSTNAME)) {
                     Toast.makeText(UploadStylistProfileActivity.this,
@@ -156,6 +159,11 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                     Toast.makeText(UploadStylistProfileActivity.this,
                             "Please enter stylist last name", Toast.LENGTH_SHORT).show();
                     edit_lastName.setError("Last Name is required.");
+                    edit_lastName.requestFocus();
+                } else if (TextUtils.isEmpty(_CITY)) {
+                    Toast.makeText(UploadStylistProfileActivity.this,
+                            "Please enter stylist located city", Toast.LENGTH_SHORT).show();
+                    edit_lastName.setError("City is required.");
                     edit_lastName.requestFocus();
                 } else if (!_SALON.equals("") && !salonNameList.contains(_SALON)) { // salon not in DB -> ask user to create first
                         AlertDialog.Builder builder = new AlertDialog.Builder(UploadStylistProfileActivity.this);
@@ -180,7 +188,7 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
                     uploadPic(uriImage);
                     Toast.makeText(UploadStylistProfileActivity.this,
                             "Request send.", Toast.LENGTH_SHORT).show();
-                    createStylistProfile(_FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _PHOTO, 0);
+                    createStylistProfile(_FIRSTNAME, _LASTNAME, _EMAIL, _PHONE, _GENDER, _SALON, _CITY ,_PHOTO, 0);
                     finish();
                 }
             }
@@ -216,8 +224,8 @@ public class UploadStylistProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void createStylistProfile(String firstname, String lastname, String phone, String email, String gender, String salonName, String stylistPhoto, double avgRating) {
-        Stylist newStylist = new Stylist(firstname, lastname, phone, email, gender, salonName, stylistPhoto, avgRating);
+    private void createStylistProfile(String firstname, String lastname, String phone, String email, String gender, String salonName, String city ,String stylistPhoto, double avgRating) {
+        Stylist newStylist = new Stylist(firstname, lastname, phone, email, gender, salonName, city, stylistPhoto, avgRating);
         stylistDatabase.child(stylistId).setValue(newStylist);
     }
 
